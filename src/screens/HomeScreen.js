@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
 const Home = () => {
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView>
         <Image
           style={styles.img}
           source={require('../../assets/images/CrisEvo.png')}
@@ -31,14 +24,14 @@ const Home = () => {
           the manufacturers to help continue improving the performance and
           reliability of all the parts that we sell.
         </Text>
-        {/* <Image
+        <Image
           style={styles.img}
           source={require('../../assets/images/SalsEvo.png')}
         />
         <Text style={styles.text}>
           We aim to bring you the highest quality service and parts at the most
           affordable price. Stop by the shop or enjoy shopping online.
-        </Text> */}
+        </Text>
       </ScrollView>
     </View>
   );
@@ -46,33 +39,24 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 3,
+    flex: 4,
+    paddingTop: 20,
     alignItems: 'center',
   },
 
-  scrollView: {
-    // flex: 2,
-  },
-
   img: {
-    // flex: 3,
-    marginHorizontal: 15,
-    width: 375,
+    width: 395,
     alignSelf: 'center',
-    // backgroundColor: 'pink',
-    // height: 100,
   },
-  content: {},
 
   text: {
     flex: 2,
     color: 'white',
     fontWeight: '400',
     fontSize: 18,
-    // backgroundColor: 'red',
     paddingTop: 10,
     paddingBottom: 30,
-    marginHorizontal: 15,
+    marginHorizontal: 10,
   },
 });
 

@@ -1,15 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './src/screens/HomeScreen';
 import Header from './src/components/Header';
+import { NavigationContainer } from '@react-navigation/native';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Header />
-      <HomeScreen />
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        <Header />
+        <HomeScreen />
+      </View>
+    </NavigationContainer>
   );
 };
 

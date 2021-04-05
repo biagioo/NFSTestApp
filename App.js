@@ -9,7 +9,6 @@ const App = () => {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Header />
         <HomeScreen />
       </View>
     </NavigationContainer>

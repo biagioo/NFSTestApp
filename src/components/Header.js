@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Header = () => {

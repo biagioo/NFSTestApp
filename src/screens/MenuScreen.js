@@ -11,7 +11,7 @@ const MenuScreen = ({ navigation }) => {
         <Pressable
           style={styles.backBtn}
           title='Home'
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.goBack()}
         >
           <MaterialIcons name='chevron-left' size={40} color='white' />
         </Pressable>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { Animated, StyleSheet, View, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { screenWidth, screenHeight } from '../GlodalStyles';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';

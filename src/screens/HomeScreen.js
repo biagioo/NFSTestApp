@@ -1,6 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import Header from '../components/Header';
+import { screenHeight, screenWidth } from '../GlodalStyles';
 
 const Home = () => {
   return (
@@ -53,7 +61,7 @@ const styles = StyleSheet.create({
   },
 
   img: {
-    width: 395,
+    width: screenWidth - 10,
     alignSelf: 'center',
   },
 

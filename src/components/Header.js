@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Image, Pressable } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import { screenWidth, screenHeight } from '../GlodalStyles';
 const Header = () => {
   return (
     <View style={styles.header}>
@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    marginTop: 70,
+    marginTop: '15%',
     marginHorizontal: 17,
   },
   logo: {
-    marginTop: 10,
-    height: 250,
-    width: 350,
+    marginTop: '12%',
+    height: screenHeight / 6,
+    width: screenWidth - 50,
     alignSelf: 'center',
   },
 });

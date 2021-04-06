@@ -2,18 +2,22 @@ import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { screenWidth, screenHeight } from '../GlodalStyles';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
+      <Pressable
+        onPress={() => navigation.navigate('Menu')}
+        style={styles.icon}
+      >
+        <MaterialIcons name='dehaze' size={30} color='white' />
+      </Pressable>
       <Image
         style={styles.logo}
         source={require('../../assets/images/NFSLogo.png')}
         resizeMode='contain'
       />
-      <View onPress={() => navigation.navigate('Menu')} style={styles.icon}>
-        <MaterialIcons name='dehaze' size={30} color='white' />
-      </View>
     </View>
   );
 };
@@ -23,21 +27,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    backgroundColor: 'blue',
     padding: 20,
     borderRadius: 5,
+    backgroundColor: 'blue',
   },
   icon: {
     position: 'absolute',
+    zIndex: 1,
+    height: '5%',
     marginTop: '15%',
-    marginHorizontal: 17,
-    // backgroundColor: 'red',
+    marginLeft: '1%',
+    paddingHorizontal: '2%',
   },
   logo: {
-    marginTop: '12%',
-    height: screenHeight / 6,
-    width: screenWidth - 50,
     alignSelf: 'center',
+    marginTop: '12%',
+    width: screenWidth - 50,
+    height: screenHeight / 6,
   },
 });
 

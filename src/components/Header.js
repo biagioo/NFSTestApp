@@ -2,17 +2,18 @@ import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { screenWidth, screenHeight } from '../GlodalStyles';
-const Header = () => {
+
+const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
-      <View style={styles.icon}>
-        <MaterialIcons name='dehaze' size={30} color='white' />
-      </View>
       <Image
         style={styles.logo}
         source={require('../../assets/images/NFSLogo.png')}
         resizeMode='contain'
       />
+      <View onPress={() => navigation.navigate('Menu')} style={styles.icon}>
+        <MaterialIcons name='dehaze' size={30} color='white' />
+      </View>
     </View>
   );
 };
@@ -21,10 +22,16 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
   },
+  button: {
+    backgroundColor: 'blue',
+    padding: 20,
+    borderRadius: 5,
+  },
   icon: {
     position: 'absolute',
     marginTop: '15%',
     marginHorizontal: 17,
+    // backgroundColor: 'red',
   },
   logo: {
     marginTop: '12%',

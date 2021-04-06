@@ -1,20 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { MaterialIcons } from '@expo/vector-icons';
 import { screenHeight, screenWidth } from '../GlodalStyles';
 
 const MenuScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Pressable
-        style={styles.pressable}
-        title='Home'
-        onPress={() => navigation.navigate('Home')}
-      >
-        <Text style={{ color: 'white' }}>BackButton</Text>
-      </Pressable>
-      <View style={styles.content}>
-        <Text style={styles.text}>testing...</Text>
+      <View style={styles.header}>
+        <Pressable
+          style={styles.backBtn}
+          title='Home'
+          onPress={() => navigation.navigate('Home')}
+        >
+          <MaterialIcons name='chevron-left' size={40} color='white' />
+        </Pressable>
+        <Text style={styles.title}>Need For Speed NY</Text>
+      </View>
+      <View style={styles.body}>
+        <Text style={styles.text}>Evo 7/8/9 Parts</Text>
+        <Text style={styles.text}>Evo X Parts</Text>
+        <Text style={styles.text}>Shop Apparel</Text>
+        <Text style={styles.text}>Contact Us</Text>
+        <Text style={styles.text}>Customer Portal</Text>
+        <Text style={styles.text}>Social Media</Text>
       </View>
     </View>
   );
@@ -25,25 +34,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  pressable: {
-    flex: 2,
-    height: 40,
-    width: 80,
-    marginTop: '30%',
-    marginLeft: '80%',
-    alignSelf: 'center',
-    position: 'absolute',
-    // backgroundColor: 'white',
+  header: {
+    flex: 1,
+    width: screenWidth - 10,
+    marginTop: screenHeight / 13,
   },
-  content: {
-    justifyContent: 'flex-start',
+  backBtn: {
+    zIndex: 2,
+    position: 'absolute',
+    alignSelf: 'flex-end',
+  },
+  title: {
+    fontSize: 32,
+    color: 'white',
+    marginLeft: '3%',
+    fontStyle: 'italic',
+    textDecorationLine: 'underline',
+  },
+  body: {
+    flex: 8,
+    marginLeft: '5%',
     alignItems: 'baseline',
+    justifyContent: 'flex-start',
   },
   text: {
-    marginTop: '20%',
-    marginLeft: '5%',
+    fontSize: 28,
     color: 'white',
-    // backgroundColor: 'white',
+    marginBottom: '5%',
   },
 });
 

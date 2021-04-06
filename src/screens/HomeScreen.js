@@ -10,10 +10,10 @@ import {
 import Header from '../components/Header';
 import { screenHeight, screenWidth } from '../GlodalStyles';
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Header />
+      <Header navigation={navigation} />
       <View style={styles.scrollViewContainer}>
         <ScrollView>
           <Image

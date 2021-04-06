@@ -12,3 +12,9 @@ Technologies used :
 "react-native-safe-area-context": "3.1.9",
 "react-native-screens": "~2.15.2",
 "react-native-web": "~0.13.12"
+
+Need to do:
+
+- create button animation
+- add menu screen content
+- link content to website

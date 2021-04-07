@@ -3,7 +3,6 @@ import HomeScreen from './src/screens/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
-// import MenuScreen from './src/screens/MenuScreen';
 import CustomerPortal from './src/screens/CPScreen';
 import ContactUs from './src/screens/ContactUsScreen';
 import Shop from './src/screens/ShopScreen';

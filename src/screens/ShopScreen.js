@@ -10,7 +10,7 @@ const ShopScreen = ({ navigation }) => {
         <Header navigation={navigation} />
       </View>
       <View style={styles.body}>
-        <WebView source={{ uri: 'https://www.nfsperformance.com/' }} />
+        <WebView source={{ uri: 'https://www.nfsperformance.com/shop' }} />
       </View>
     </View>
   );

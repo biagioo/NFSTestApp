@@ -1,22 +1,62 @@
 import React from 'react';
 import HomeScreen from './src/screens/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import MenuScreen from './src/screens/MenuScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { MaterialIcons } from '@expo/vector-icons';
+// import MenuScreen from './src/screens/MenuScreen';
+import CustomerPortal from './src/screens/CPScreen';
+import ContactUs from './src/screens/ContactUsScreen';
+import Shop from './src/screens/ShopScreen';
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Drawer.Navigator
+        drawerStyle={{
+          width: 200,
+        }}
         screenOptions={{
           headerShown: false,
+          swipeEnabled: true,
         }}
       >
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='Menu' component={MenuScreen} />
-      </Stack.Navigator>
+        <Drawer.Screen
+          name='Home'
+          options={{
+            drawerIcon: ({ focused }) => (
+              <MaterialIcons
+                name='home'
+                size={focused ? 25 : 20}
+                color='black'
+              />
+            ),
+          }}
+          component={HomeScreen}
+        />
+        <Drawer.Screen
+          name='Contact Us'
+          options={{
+            drawerIcon: ({ focused }) => (
+              <MaterialIcons
+                name='phone'
+                size={focused ? 25 : 20}
+                color='black'
+              />
+            ),
+          }}
+          component={ContactUs}
+        />
+        <Drawer.Screen name='Customer Portal' component={CustomerPortal} />
+        <Drawer.Screen
+          name='Shop'
+          component={Shop}
+          screenOptions={{
+            headerShown: true,
+          }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };

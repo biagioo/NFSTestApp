@@ -17,12 +17,8 @@ const ShopScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   header: { flex: 1 },
-  body: {
-    flex: 4,
-  },
+  body: { flex: 4 },
 });
 export default ShopScreen;

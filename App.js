@@ -15,7 +15,7 @@ const App = () => {
     <NavigationContainer>
       <Drawer.Navigator
         drawerStyle={{
-          width: 200,
+          width: 230,
         }}
         screenOptions={{
           headerShown: false,
@@ -24,6 +24,7 @@ const App = () => {
       >
         <Drawer.Screen
           name='Home'
+          component={HomeScreen}
           options={{
             drawerIcon: ({ focused }) => (
               <MaterialIcons
@@ -33,10 +34,23 @@ const App = () => {
               />
             ),
           }}
-          component={HomeScreen}
+        />
+        <Drawer.Screen
+          name='Shop'
+          component={Shop}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <MaterialIcons
+                name='shopping-cart'
+                size={focused ? 25 : 20}
+                color='black'
+              />
+            ),
+          }}
         />
         <Drawer.Screen
           name='Contact Us'
+          component={ContactUs}
           options={{
             drawerIcon: ({ focused }) => (
               <MaterialIcons
@@ -46,14 +60,18 @@ const App = () => {
               />
             ),
           }}
-          component={ContactUs}
         />
-        <Drawer.Screen name='Customer Portal' component={CustomerPortal} />
         <Drawer.Screen
-          name='Shop'
-          component={Shop}
-          screenOptions={{
-            headerShown: true,
+          name='Customer Portal'
+          component={CustomerPortal}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <MaterialIcons
+                name='person'
+                size={focused ? 25 : 20}
+                color='black'
+              />
+            ),
           }}
         />
       </Drawer.Navigator>

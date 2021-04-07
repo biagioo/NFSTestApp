@@ -30,7 +30,7 @@ const Home = ({ navigation }) => {
           </Text>
           <Image
             style={styles.img}
-            source={require('../../assets/images/SalsEvo.png')}
+            source={require('../../assets/images/MikeyEvo.png')}
           />
           <Text style={styles.text}>
             We aim to bring you the highest quality service and parts at the

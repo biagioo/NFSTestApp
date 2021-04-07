@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { MaterialIcons } from '@expo/vector-icons';
-import { screenHeight, screenWidth } from '../GlodalStyles';
+import { screenHeight, screenWidth } from '../GlobalStyles';
 
 const MenuScreen = ({ navigation }) => {
   return (

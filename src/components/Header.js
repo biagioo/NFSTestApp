@@ -1,16 +1,16 @@
 import React from 'react';
-import { Animated, StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { screenWidth, screenHeight } from '../GlodalStyles';
+import { screenWidth, screenHeight } from '../GlobalStyles';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const Header = ({ navigation }) => {
+  const onPressHandler = () => {
+    navigation.openDrawer();
+  };
   return (
     <View style={styles.header}>
-      <Pressable
-        onPress={() => navigation.navigate('Menu')}
-        style={styles.icon}
-      >
+      <Pressable onPress={onPressHandler} style={styles.icon}>
         <MaterialIcons name='dehaze' size={30} color='white' />
       </Pressable>
       <Image
@@ -25,6 +25,7 @@ const Header = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
+    backgroundColor: 'black',
   },
   button: {
     padding: 20,

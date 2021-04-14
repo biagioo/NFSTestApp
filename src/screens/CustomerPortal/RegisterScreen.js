@@ -22,6 +22,8 @@ const RegisterScreen = ({ navigation }) => {
   const [nfsCode, setNfsCode] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
 
+  const register = () => {};
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -95,10 +97,7 @@ const RegisterScreen = ({ navigation }) => {
               }}
               onChangeText={text => setProfilePhoto(text)}
             />
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => navigation.navigate('Register')}
-            >
+            <TouchableOpacity activeOpacity={0.5} onPress={register}>
               <View style={styles.button}>
                 <Text style={{ fontWeight: '600' }}>Register</Text>
               </View>

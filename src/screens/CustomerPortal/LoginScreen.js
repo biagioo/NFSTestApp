@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Header from '../../components/Header';
+import { Button, Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../GlobalStyles';
+import { StatusBar } from 'expo-status-bar';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
     <View style={styles.container}>
+      <StatusBar style='auto' />
       <Header navigation={navigation} />
       <View keyboardShouldPersistTaps='handled' style={styles.body}>
         <Text style={styles.title}>Log In</Text>
@@ -29,12 +32,16 @@ const LoginScreen = ({ navigation }) => {
           value={password}
           onChangeText={text => setPassword(text)}
         />
+
         <TouchableOpacity activeOpacity={0.5}>
           <View style={styles.button}>
             <Text style={{ fontWeight: '600' }}>Log In</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate('Register')}
+        >
           <View style={styles.button}>
             <Text style={{ fontWeight: '600' }}>Register</Text>
           </View>

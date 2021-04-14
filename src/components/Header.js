@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Image } from 'react-native-elements';
 import { MaterialIcons } from '@expo/vector-icons';
 import { screenWidth, screenHeight } from '../GlobalStyles';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { StatusBar } from 'expo-status-bar';
 
 const Header = ({ navigation }) => {
   const onPressHandler = () => {
@@ -10,14 +12,15 @@ const Header = ({ navigation }) => {
   };
   return (
     <View style={styles.header}>
-      <Pressable onPress={onPressHandler} style={styles.icon}>
-        <MaterialIcons name='dehaze' size={30} color='white' />
-      </Pressable>
+      <StatusBar style='light' />
       <Image
         style={styles.logo}
         source={require('../../assets/images/NFSLogo.png')}
         resizeMode='contain'
       />
+      <Pressable onPress={onPressHandler} style={styles.drawerBtn}>
+        <MaterialIcons name='dehaze' size={30} color='white' />
+      </Pressable>
     </View>
   );
 };
@@ -27,23 +30,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  button: {
-    padding: 20,
-    borderRadius: 5,
-    backgroundColor: 'blue',
-  },
-  icon: {
+  drawerBtn: {
     position: 'absolute',
     zIndex: 1,
-    height: '5%',
     marginTop: '15%',
-    marginLeft: '1%',
-    paddingHorizontal: '2%',
+    marginLeft: '2%',
   },
   logo: {
-    alignSelf: 'center',
     marginTop: '12%',
-    width: screenWidth - 50,
+    marginHorizontal: '3%',
+    width: screenWidth - 30,
     height: screenHeight / 6,
   },
 });

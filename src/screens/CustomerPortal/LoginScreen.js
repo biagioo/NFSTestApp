@@ -4,12 +4,12 @@ import {
   View,
   Text,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
-import Header from '../components/Header';
-import { screenHeight, screenWidth } from '../GlobalStyles';
+import Header from '../../components/Header';
+import { screenHeight, screenWidth } from '../../GlobalStyles';
 
-const CustomerPortal = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
@@ -29,16 +29,16 @@ const CustomerPortal = ({ navigation }) => {
           value={password}
           onChangeText={text => setPassword(text)}
         />
-        <TouchableHighlight>
+        <TouchableOpacity activeOpacity={0.5}>
           <View style={styles.button}>
             <Text style={{ fontWeight: '600' }}>Log In</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5}>
           <View style={styles.button}>
-            <Text style={{ fontWeight: '600' }}>Sign Up</Text>
+            <Text style={{ fontWeight: '600' }}>Register</Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         <Text style={styles.text}>Forgot You Password?</Text>
       </View>
     </View>
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
     marginBottom: '15%',
   },
 });
-export default CustomerPortal;
+export default LoginScreen;

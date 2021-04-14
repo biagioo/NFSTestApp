@@ -3,11 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
+  Keyboard,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Header from '../../components/Header';
-import { Button, Input } from 'react-native-elements';
+import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
 
@@ -15,40 +17,47 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      keyboardVerticalOffset={90}
+    >
       <StatusBar style='auto' />
       <Header navigation={navigation} />
-      <View keyboardShouldPersistTaps='handled' style={styles.body}>
-        <Text style={styles.title}>Log In</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={'Email'}
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={'Password'}
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-
-        <TouchableOpacity activeOpacity={0.5}>
-          <View style={styles.button}>
-            <Text style={{ fontWeight: '600' }}>Log In</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => navigation.navigate('Register')}
-        >
-          <View style={styles.button}>
-            <Text style={{ fontWeight: '600' }}>Register</Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.text}>Forgot You Password?</Text>
-      </View>
-    </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View keyboardShouldPersistTaps='handled' style={styles.body}>
+          <Text style={styles.title}>Log In</Text>
+          <Input
+            style={styles.input}
+            placeholder={'Email'}
+            value={email}
+            type='email'
+            onChangeText={text => setEmail(text)}
+          />
+          <Input
+            style={styles.input}
+            placeholder={'Password'}
+            value={password}
+            type='password'
+            onChangeText={text => setPassword(text)}
+          />
+          <TouchableOpacity activeOpacity={0.5}>
+            <View style={styles.button}>
+              <Text style={{ fontWeight: '600' }}>Log In</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate('Register')}
+          >
+            <View style={styles.button}>
+              <Text style={{ fontWeight: '600' }}>Register</Text>
+            </View>
+          </TouchableOpacity>
+          <Text style={styles.text}>Forgot You Password?</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -57,26 +66,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  body: {
-    flex: 4,
-    marginTop: '15%',
-    alignContent: 'center',
-  },
   title: {
     color: 'white',
     fontSize: 28,
     fontWeight: '700',
     alignSelf: 'center',
-    marginBottom: '15%',
+    marginBottom: '4%',
+  },
+  body: {
+    flex: 2.5,
+    marginTop: '15%',
+    alignContent: 'center',
   },
   input: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    height: screenHeight / 17,
-    width: screenWidth - 60,
     backgroundColor: '#F6F5F5',
     borderRadius: 60,
-    alignSelf: 'center',
     marginBottom: '5%',
   },
   button: {
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ADB1BB',
     borderRadius: 60,
     height: screenHeight / 17,
-    width: screenWidth - 130,
+    width: screenWidth - 60,
     alignSelf: 'center',
     marginBottom: '5%',
   },

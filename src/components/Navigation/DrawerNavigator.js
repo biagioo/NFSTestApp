@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import HomeScreen from '../../screens/HomeScreen';
 import ShopScreen from '../../screens/ShopScreen';
 import ContactUs from '../../screens/ContactUsScreen';
-import LoginScreen from '../../screens/CustomerPortal/LoginScreen';
+import CustomerPortal from '../../screens/CustomerPortal/CustomerPortal';
 
 const Drawer = createDrawerNavigator();
 
@@ -57,7 +57,7 @@ const DrawerNavigator = () => {
       />
       <Drawer.Screen
         name='Customer Portal'
-        component={LoginScreen}
+        component={CustomerPortal}
         options={{
           drawerIcon: ({ focused }) => (
             <MaterialIcons

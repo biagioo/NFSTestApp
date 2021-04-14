@@ -29,9 +29,11 @@ const RegisterScreen = ({ navigation }) => {
           value={password}
           onChangeText={text => setPassword(text)}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Log In')}>
           <View style={styles.button}>
-            <Text style={{ fontWeight: '600' }}>Log In</Text>
+            <Text style={{ fontWeight: '600' }}>
+              Already Registered? Log In Here
+            </Text>
           </View>
         </TouchableOpacity>
         <Text style={styles.text}>Forgot You Password?</Text>

@@ -3,42 +3,120 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
+  Keyboard,
+  ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Header from '../../components/Header';
+import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../GlobalStyles';
+import { StatusBar } from 'expo-status-bar';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [vinNumber, setVinNumber] = useState('');
+  const [nfsCode, setNfsCode] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState('');
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      keyboardVerticalOffset={90}
+    >
+      <StatusBar style='auto' />
       <Header navigation={navigation} />
-      <View keyboardShouldPersistTaps='handled' style={styles.body}>
-        <Text style={styles.title}>Register</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={'Email'}
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={'Password'}
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('Log In')}>
-          <View style={styles.button}>
-            <Text style={{ fontWeight: '600' }}>
-              Already Registered? Log In Here
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.text}>Forgot You Password?</Text>
-      </View>
-    </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.body}>
+          <Text style={styles.title}>Register</Text>
+          <ScrollView style={{ flex: 1 }}>
+            <Input
+              style={styles.input}
+              placeholder={'Email'}
+              value={email}
+              type='email'
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setEmail(text)}
+            />
+            <Input
+              style={styles.input}
+              secureTextEntry
+              placeholder={'Password'}
+              value={password}
+              type='password'
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setPassword(text)}
+            />
+            <Input
+              style={styles.input}
+              placeholder={'Name'}
+              value={name}
+              type='name'
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setName(text)}
+            />
+            <Input
+              style={styles.input}
+              placeholder={'Last 6 of Vehicle Vin Number'}
+              value={vinNumber}
+              type='vinNumber'
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setVinNumber(text)}
+            />
+            <Input
+              style={styles.input}
+              placeholder={'NFS Code'}
+              value={nfsCode}
+              type='nfsCode'
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setNfsCode(text)}
+            />
+            <Input
+              style={styles.input}
+              placeholder={'Profile Photo (optional)'}
+              value={profilePhoto}
+              type='profilePhoto'
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setProfilePhoto(text)}
+            />
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <View style={styles.button}>
+                <Text style={{ fontWeight: '600' }}>Register</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate('Log In')}
+            >
+              <View style={styles.button}>
+                <Text style={{ fontWeight: '600' }}>
+                  Already Registered? Log In Here
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -49,27 +127,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  body: {
-    flex: 4,
-    marginTop: '15%',
-    alignContent: 'center',
-  },
   title: {
     color: 'white',
     fontSize: 28,
     fontWeight: '700',
     alignSelf: 'center',
-    marginBottom: '15%',
+    marginBottom: '4%',
+  },
+  body: {
+    flex: 5,
+    marginTop: '15%',
+    alignContent: 'center',
   },
   input: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    height: screenHeight / 17,
-    width: screenWidth - 60,
     backgroundColor: '#F6F5F5',
     borderRadius: 60,
-    alignSelf: 'center',
-    marginBottom: '5%',
   },
   button: {
     alignItems: 'center',
@@ -78,7 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ADB1BB',
     borderRadius: 60,
     height: screenHeight / 17,
-    width: screenWidth - 130,
+    width: screenWidth - 60,
     alignSelf: 'center',
     marginBottom: '5%',
   },

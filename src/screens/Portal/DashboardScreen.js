@@ -1,16 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import firebase from 'firebase';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { auth } from '../../../firebase';
+// import { auth, db } from '../../../firebase';
 import Header from '../../components/Header';
 
 const DashboardScreen = ({ navigation }) => {
+  const [data, setData] = useState({});
+
   const signOutUser = () => {
     auth.signOut().then(() => {
       navigation.replace('Log In');
     });
+  };
+
+  const getUserData = () => {
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          console.log(snapshot.data());
+        } else {
+          console.log('doesnt exist');
+        }
+      });
   };
 
   return (
@@ -20,6 +38,7 @@ const DashboardScreen = ({ navigation }) => {
         <Header navigation={navigation} />
       </View>
       <View style={styles.body}>
+        <Button title='Get User Info' onPress={getUserData} />
         <Text style={{ color: 'black' }}>Dashboard Screen</Text>
         <Button title='Log out' onPress={signOutUser} />
       </View>
@@ -41,5 +60,12 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 2,
+  },
+  data: {
+    flex: 1,
+    backgroundColor: 'green',
+    width: 400,
+    height: 1000,
+    bottom: 100,
   },
 });

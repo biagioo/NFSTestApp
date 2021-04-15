@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
+  Alert,
   View,
   Text,
   Keyboard,
+  StyleSheet,
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -13,6 +14,7 @@ import Header from '../../components/Header';
 import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
+import { auth, db } from '../../../firebase';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -22,7 +24,51 @@ const RegisterScreen = ({ navigation }) => {
   const [nfsCode, setNfsCode] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
 
-  const register = () => {};
+  const emptyState = () => {
+    setName('');
+    setEmail('');
+    setPassword('');
+    setVinNumber('');
+    setNfsCode('');
+  };
+
+  const register = () => {
+    if (!name) {
+      Alert.alert('Name is Required');
+    } else if (!email) {
+      Alert.alert('Email is Required');
+    } else if (!password) {
+      Alert.alert('Password is Required');
+    } else if (!vinNumber) {
+      Alert.alert('The Last 6 numbers of your Vehicles Vin Number is Required');
+    } else if (!nfsCode) {
+      Alert.alert('NFS Code is Required, Please contact NFS to obtain a code.');
+    } else {
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(authUser => {
+          authUser.user.updateProfile({
+            name: name,
+            vinNumber: vinNumber,
+            nfsCode: nfsCode,
+          });
+        })
+        .then(() => {
+          const currentUser = auth.currentUser;
+          db.collection('users').doc(currentUser.uid).set({
+            email: currentUser.email,
+            name: name,
+            vinNumber: vinNumber,
+            nfsCode: nfsCode,
+          });
+        })
+        .then(() => {
+          navigation.navigate('Loading');
+          emptyState();
+        })
+        .catch(error => alert(error.message));
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -40,7 +86,6 @@ const RegisterScreen = ({ navigation }) => {
               style={styles.input}
               placeholder={'Email'}
               value={email}
-              type='email'
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}
@@ -51,7 +96,6 @@ const RegisterScreen = ({ navigation }) => {
               secureTextEntry
               placeholder={'Password'}
               value={password}
-              type='password'
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}
@@ -61,7 +105,6 @@ const RegisterScreen = ({ navigation }) => {
               style={styles.input}
               placeholder={'Name'}
               value={name}
-              type='name'
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}
@@ -71,7 +114,6 @@ const RegisterScreen = ({ navigation }) => {
               style={styles.input}
               placeholder={'Last 6 of Vehicle Vin Number'}
               value={vinNumber}
-              type='vinNumber'
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}
@@ -81,7 +123,6 @@ const RegisterScreen = ({ navigation }) => {
               style={styles.input}
               placeholder={'NFS Code'}
               value={nfsCode}
-              type='nfsCode'
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}
@@ -91,7 +132,6 @@ const RegisterScreen = ({ navigation }) => {
               style={styles.input}
               placeholder={'Profile Photo (optional)'}
               value={profilePhoto}
-              type='profilePhoto'
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}

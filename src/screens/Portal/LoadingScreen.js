@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import * as firebase from 'firebase';
+import { auth, db } from '../../../firebase';
 
 export default function LoadingScreen({ navigation }) {
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    auth.onAuthStateChanged(user => {
       if (user) {
+        console.log(db.collection('users'));
         navigation.replace('Dashboard');
       } else {
         navigation.replace('Log In');

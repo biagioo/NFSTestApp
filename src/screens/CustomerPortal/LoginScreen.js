@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,10 +12,28 @@ import Header from '../../components/Header';
 import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
+import { auth } from '../../../firebase';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        navigation.replace('Dashboard');
+      }
+    });
+
+    return unsubscribe;
+  });
+
+  const signIn = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => alert(error));
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -36,12 +54,13 @@ const LoginScreen = ({ navigation }) => {
           />
           <Input
             style={styles.input}
+            secureTextEntry
             placeholder={'Password'}
             value={password}
             type='password'
             onChangeText={text => setPassword(text)}
           />
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity activeOpacity={0.5} onPress={signIn}>
             <View style={styles.button}>
               <Text style={{ fontWeight: '600' }}>Log In</Text>
             </View>

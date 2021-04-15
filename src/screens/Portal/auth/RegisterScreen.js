@@ -10,11 +10,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Header from '../../components/Header';
+import Header from '../../../components/Header';
 import { Input } from 'react-native-elements';
-import { screenHeight, screenWidth } from '../../GlobalStyles';
+import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
-import { auth, db } from '../../../firebase';
+import { auth, db } from '../../../../firebase';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -48,15 +48,14 @@ const RegisterScreen = ({ navigation }) => {
         .createUserWithEmailAndPassword(email, password)
         .then(authUser => {
           authUser.user.updateProfile({
-            name: name,
-            vinNumber: vinNumber,
-            nfsCode: nfsCode,
+            displayName: name,
           });
         })
         .then(() => {
           const currentUser = auth.currentUser;
           db.collection('users').doc(currentUser.uid).set({
             email: currentUser.email,
+            userId: currentUser.uid,
             name: name,
             vinNumber: vinNumber,
             nfsCode: nfsCode,

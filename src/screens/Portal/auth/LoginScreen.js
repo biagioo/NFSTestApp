@@ -8,11 +8,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Header from '../../components/Header';
+import Header from '../../../components/Header';
 import { Input } from 'react-native-elements';
-import { screenHeight, screenWidth } from '../../GlobalStyles';
+import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
-import { auth } from '../../../firebase';
+import { auth } from '../../../../firebase';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

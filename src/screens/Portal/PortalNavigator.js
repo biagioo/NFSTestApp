@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './LoginScreen';
-import RegisterScreen from './RegisterScreen';
 import DashboardScreen from './DashboardScreen';
 import LoadingScreen from './LoadingScreen';
 import CustomerDashboardScreen from './CustomerPortal/CustomerDashboardScreen';
 import AdminDashboardScreen from './AdminPortal/AdminDashboardScreen';
+import LoginScreen from './auth/LoginScreen';
+import RegisterScreen from './auth/RegisterScreen';
 
 const Stack = createStackNavigator();
 

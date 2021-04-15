@@ -6,7 +6,6 @@ export default function LoadingScreen({ navigation }) {
   useEffect(() => {
     auth.onAuthStateChanged(user => {
       if (user) {
-        console.log(db.collection('users'));
         navigation.replace('Dashboard');
       } else {
         navigation.replace('Log In');

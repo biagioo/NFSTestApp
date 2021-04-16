@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { auth, db } from '../../../firebase';
 import Header from '../../components/Header';
 
 const DashboardScreen = ({ navigation }) => {

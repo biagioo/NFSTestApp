@@ -12,6 +12,7 @@ import Header from '../../../components/Header';
 import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
+import firebase from 'firebase';
 import { auth } from '../../../../firebase';
 
 const LoginScreen = ({ navigation }) => {
@@ -19,9 +20,9 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(authUser => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(authUser => {
       if (authUser) {
-        navigation.replace('Loading');
+        navigation.replace('MainScreen');
       }
     });
 
@@ -29,7 +30,8 @@ const LoginScreen = ({ navigation }) => {
   });
 
   const signIn = () => {
-    auth
+    firebase
+      .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(error => alert(error));
   };

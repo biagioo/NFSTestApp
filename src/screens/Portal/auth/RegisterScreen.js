@@ -14,7 +14,8 @@ import Header from '../../../components/Header';
 import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
-import { auth, db } from '../../../../firebase';
+import { db } from '../../../../firebase';
+import firebase from 'firebase';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -44,7 +45,8 @@ const RegisterScreen = ({ navigation }) => {
     } else if (!nfsCode) {
       Alert.alert('NFS Code is Required, Please contact NFS to obtain a code.');
     } else {
-      auth
+      firebase
+        .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(authUser => {
           authUser.user.updateProfile({
@@ -52,7 +54,7 @@ const RegisterScreen = ({ navigation }) => {
           });
         })
         .then(() => {
-          const currentUser = auth.currentUser;
+          const currentUser = firebase.auth().currentUser;
           db.collection('users').doc(currentUser.uid).set({
             email: currentUser.email,
             userId: currentUser.uid,

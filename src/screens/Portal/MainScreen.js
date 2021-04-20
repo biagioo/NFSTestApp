@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import firebase from 'firebase';
+
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { getUser } from '../../actions/userActions';
 
 const MainScreen = props => {
-  // const { email, name, nfsCode, vinNumber } = userInfo;
   const {
     navigation,
     user: { userInfo, loading },
@@ -18,15 +17,6 @@ const MainScreen = props => {
   useEffect(() => {
     getUser();
   }, []);
-
-  // const signOutUser = () => {
-  //   firebase
-  //     .auth()
-  //     .signOut()
-  //     .then(() => {
-  //       navigation.navigate('Log In');
-  //     });
-  // };
 
   const enterPortal = () => {
     if (userInfo.nfsCode === 'NFS_AP!') {

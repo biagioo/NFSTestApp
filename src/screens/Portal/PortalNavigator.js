@@ -1,24 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-import DashboardScreen from './DashboardScreen';
+import firebase from 'firebase';
+import rootReducer from '../../reducers/index';
 import LoadingScreen from './LoadingScreen';
 import CustomerDashboardScreen from './CustomerPortal/CustomerDashboardScreen';
 import AdminDashboardScreen from './AdminPortal/AdminDashboardScreen';
 import LoginScreen from './auth/LoginScreen';
 import RegisterScreen from './auth/RegisterScreen';
-import store from '../../store';
+import MainScreen from './MainScreen';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyD_hY7ln70-ScZMitRzW22kZWLaBFwhm0s',
+  authDomain: 'nfs-test-app.firebaseapp.com',
+  projectId: 'nfs-test-app',
+  storageBucket: 'nfs-test-app.appspot.com',
+  messagingSenderId: '1050548907903',
+  appId: '1:1050548907903:web:ba3252e9df066008d0344a',
+};
+
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const Stack = createStackNavigator();
 
-const PortalNavigator = () => {
+const PortalNavigator = ({ navigation }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user || user === null) {
+        setLoggedIn(false);
+        setLoaded(true);
+      } else {
+        setLoggedIn(true);
+        setLoaded(true);
+      }
+    });
+  }, [firebase]);
+
+  if (!loaded) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Provider store={store}>
-      <Stack.Navigator headerMode='none'>
+      <Stack.Navigator initialRouteName='Log In' headerMode='none'>
         <Stack.Screen name='Log In' component={LoginScreen} />
         <Stack.Screen name='Register' component={RegisterScreen} />
-        <Stack.Screen name='Dashboard' component={DashboardScreen} />
+        <Stack.Screen name='MainScreen' component={MainScreen} />
         <Stack.Screen name='Loading' component={LoadingScreen} />
         <Stack.Screen
           name='CustomerDashboard'

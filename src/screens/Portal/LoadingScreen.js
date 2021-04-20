@@ -1,24 +1,17 @@
-import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { auth, db } from '../../../firebase';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 
-export default function LoadingScreen({ navigation }) {
-  useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.replace('Dashboard');
-      } else {
-        navigation.replace('Log In');
-      }
-    });
-  });
-
+const LoadingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      <StatusBar style='dark' />
       <ActivityIndicator size='large' />
     </View>
   );
-}
+};
+
+export default LoadingScreen;
 
 const styles = StyleSheet.create({
   container: {

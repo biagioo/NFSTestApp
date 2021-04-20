@@ -1,34 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { connect } from 'react-redux';
+import CustomerProfile from './CustomerProfile';
+import CustomerUpdates from './CustomerUpdates';
 
-// tab navi
+const Tab = createBottomTabNavigator();
 
-const CustomerDashboardScreen = props => {
-  const {
-    user: { userInfo },
-  } = props;
+const CustomerDashboardScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text>Customer Portal</Text>
-      <Text>{userInfo.email}</Text>
-      <Text>{userInfo.vinNumber}</Text>
-      <Text>{userInfo.name}</Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name='Customer Profile' component={CustomerProfile} />
+      <Tab.Screen name='Customer Updates' component={CustomerUpdates} />
+    </Tab.Navigator>
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.user,
-});
-
-export default connect(mapStateToProps)(CustomerDashboardScreen);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default CustomerDashboardScreen;

@@ -1,35 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { connect } from 'react-redux';
+import AdminProfile from './AdminProfile';
+import AdminUpdates from './AdminUpdates';
 
-// tab navi
+const Tab = createBottomTabNavigator();
 
-const AdminDashboardScreen = props => {
-  const {
-    user: { userInfo },
-  } = props;
+const AdminDashboardScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text>Admin Portal</Text>
-      <Text>{userInfo.email}</Text>
-      <Text>{userInfo.vinNumber}</Text>
-      <Text>{userInfo.name}</Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name='Admin Profile' component={AdminProfile} />
+      <Tab.Screen name='Admin Updates' component={AdminUpdates} />
+    </Tab.Navigator>
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.user,
-});
-
-export default connect(mapStateToProps)(AdminDashboardScreen);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundColor: 'black',
-  },
-});
+export default AdminDashboardScreen;

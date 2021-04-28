@@ -14,10 +14,8 @@ import Header from '../../../components/Header';
 import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
-import { db } from '../../../../firebase';
-import firebase from 'firebase';
 import { useDispatch } from 'react-redux';
-import { signUp } from '../../../actions/auth.actions';
+import { signUp } from '../../../actions';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

@@ -1,22 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import firebase from 'firebase';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
+import { signOut } from '../../../actions';
 
 const CustomerProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
 
   const { name, email, vinNumber, nfsCode } = auth;
 
+  const dispatch = useDispatch();
+
   const signOutUser = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        navigation.replace('Log In');
-      });
+    dispatch(signOut());
+    navigation.replace('Log In');
   };
   return (
     <View style={styles.container}>

@@ -14,7 +14,7 @@ import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
 import { useDispatch } from 'react-redux';
-import { signIn } from '../../../actions/auth.actions';
+import { signIn } from '../../../actions';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
   const signUserIn = () => {
     dispatch(signIn({ email, password }));
   };
-  console.log();
+  // console.log('authUth', firebase.auth().currentUser);
 
   return (
     <KeyboardAvoidingView

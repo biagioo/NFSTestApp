@@ -1,3 +1,4 @@
+export const SET_USER = 'SET_USER';
 export const GET_USER = 'GET_USER';
 export const GET_CUSTOMERS = 'GET_CUSTOMERS';
 export const SET_LOADING = 'SET_LOADING';

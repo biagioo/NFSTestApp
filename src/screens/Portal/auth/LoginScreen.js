@@ -13,11 +13,13 @@ import { Input } from 'react-native-elements';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
-import { auth } from '../../../../firebase';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../../actions/auth.actions';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(authUser => {
@@ -29,12 +31,10 @@ const LoginScreen = ({ navigation }) => {
     return unsubscribe;
   });
 
-  const signIn = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch(error => alert(error));
+  const signUserIn = () => {
+    dispatch(signIn({ email, password }));
   };
+  console.log();
 
   return (
     <KeyboardAvoidingView
@@ -62,7 +62,7 @@ const LoginScreen = ({ navigation }) => {
             type='password'
             onChangeText={text => setPassword(text)}
           />
-          <TouchableOpacity activeOpacity={0.5} onPress={signIn}>
+          <TouchableOpacity activeOpacity={0.5} onPress={signUserIn}>
             <View style={styles.button}>
               <Text style={{ fontWeight: '600' }}>Log In</Text>
             </View>

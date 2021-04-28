@@ -1,12 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 import { Button } from 'react-native-elements';
 
-const CustomerProfile = ({ navigation, user: { userInfo } }) => {
-  const { name, email, vinNumber, nfsCode } = userInfo;
+const CustomerProfile = ({ navigation }) => {
+  const auth = useSelector(state => state.auth);
+
+  const { name, email, vinNumber, nfsCode } = auth;
 
   const signOutUser = () => {
     firebase
@@ -28,11 +30,7 @@ const CustomerProfile = ({ navigation, user: { userInfo } }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.user,
-});
-
-export default connect(mapStateToProps)(CustomerProfile);
+export default CustomerProfile;
 
 const styles = StyleSheet.create({
   container: {

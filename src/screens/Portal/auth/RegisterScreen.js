@@ -16,6 +16,8 @@ import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
 import { db } from '../../../../firebase';
 import firebase from 'firebase';
+import { useDispatch } from 'react-redux';
+import { signUp } from '../../../actions/auth.actions';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -24,6 +26,7 @@ const RegisterScreen = ({ navigation }) => {
   const [vinNumber, setVinNumber] = useState('');
   const [nfsCode, setNfsCode] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
+  const dispatch = useDispatch();
 
   const emptyState = () => {
     setName('');
@@ -33,7 +36,7 @@ const RegisterScreen = ({ navigation }) => {
     setNfsCode('');
   };
 
-  const register = () => {
+  const register = async () => {
     if (!name) {
       Alert.alert('Name is Required');
     } else if (!email) {
@@ -45,26 +48,17 @@ const RegisterScreen = ({ navigation }) => {
     } else if (!nfsCode) {
       Alert.alert('NFS Code is Required, Please contact NFS to obtain a code.');
     } else {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(authUser => {
-          authUser.user.updateProfile({
-            displayName: name,
-          });
-        })
+      const user = {
+        email,
+        password,
+        name,
+        vinNumber,
+        nfsCode,
+      };
+
+      dispatch(signUp(user))
         .then(() => {
-          const currentUser = firebase.auth().currentUser;
-          db.collection('users').doc(currentUser.uid).set({
-            email: currentUser.email,
-            userId: currentUser.uid,
-            name: name,
-            vinNumber: vinNumber,
-            nfsCode: nfsCode,
-          });
-        })
-        .then(() => {
-          navigation.navigate('Loading');
+          navigation.navigate('Log In');
           emptyState();
         })
         .catch(error => alert(error.message));

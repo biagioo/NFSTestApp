@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 import { Button } from 'react-native-elements';
 
-const AdminProfile = ({ navigation, user: { userInfo } }) => {
-  const { name, email, vinNumber, nfsCode } = userInfo;
+const AdminProfile = ({ navigation }) => {
+  const auth = useSelector(state => state.auth);
+  const { name, email, vinNumber, nfsCode } = auth;
 
   const signOutUser = () => {
     firebase
@@ -16,7 +17,7 @@ const AdminProfile = ({ navigation, user: { userInfo } }) => {
         navigation.replace('Log In');
       });
   };
-
+  console.log(auth);
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />
@@ -29,11 +30,11 @@ const AdminProfile = ({ navigation, user: { userInfo } }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.user,
-});
+// const mapStateToProps = state => ({
+//   user: state.user,
+// });
 
-export default connect(mapStateToProps)(AdminProfile);
+export default AdminProfile;
 
 const styles = StyleSheet.create({
   container: {

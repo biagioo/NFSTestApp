@@ -3,19 +3,18 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
 
 import { getUser } from '../../actions/userActions';
 
 const MainScreen = props => {
-  const {
-    navigation,
-    user: { userInfo, loading },
-    getUser,
-  } = props;
+  const userInfo = useSelector(state => state.user.userInfo);
+  const loading = useSelector(state => state.user.loading);
+  const dispatch = useDispatch();
+  const { navigation } = props;
 
   useEffect(() => {
-    getUser();
+    dispatch(getUser());
   }, []);
 
   const enterPortal = () => {
@@ -43,11 +42,7 @@ const MainScreen = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.user,
-});
-
-export default connect(mapStateToProps, { getUser })(MainScreen);
+export default MainScreen;
 
 const styles = StyleSheet.create({
   container: {

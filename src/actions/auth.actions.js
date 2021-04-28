@@ -33,7 +33,6 @@ export const signUp = user => {
           .then(() => {
             const loggedInUser = {
               email: user.email,
-              uid: currentUser.uid,
               name: user.name,
               vinNumber: user.vinNumber,
               nfsCode: user.nfsCode,
@@ -62,9 +61,17 @@ export const signIn = user => {
           .get()
           .then(snapshot => {
             if (snapshot.exists) {
+              //   console.log('snapshot', snapshot.data());
+              const user = {
+                name: snapshot.data().name,
+                email: snapshot.data().email,
+                nfsCode: snapshot.data().nfsCode,
+                vinNumber: snapshot.data().vinNumber,
+              };
+
               dispatch({
                 type: SET_USER,
-                payload: { user: snapshot.data() },
+                payload: { user },
               });
             }
           });
@@ -72,6 +79,11 @@ export const signIn = user => {
       .catch(error => alert(error));
   };
 };
-// isUserLoggedIn
 
 // Logout
+
+export const signOut = () => {
+  return async => {
+    firebase.auth().signOut();
+  };
+};

@@ -3,7 +3,6 @@ import { SET_USER } from '../actions/types';
 const initialState = {
   name: '',
   email: '',
-  uid: '',
   vinNumber: '',
   nfsCode: '',
   error: null,

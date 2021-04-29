@@ -34,6 +34,7 @@ export const signUp = user => {
             const loggedInUser = {
               email: user.email,
               name: user.name,
+              uid: currentUser.uid,
               vinNumber: user.vinNumber,
               nfsCode: user.nfsCode,
             };
@@ -75,6 +76,7 @@ export const getSignedInUser = () => {
             email: snapshot.data().email,
             nfsCode: snapshot.data().nfsCode,
             vinNumber: snapshot.data().vinNumber,
+            uid: snapshot.data().uid,
           };
 
           dispatch({

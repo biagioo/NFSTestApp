@@ -5,6 +5,7 @@ const initialState = {
   email: '',
   vinNumber: '',
   nfsCode: '',
+  uid: '',
   error: null,
 };
 

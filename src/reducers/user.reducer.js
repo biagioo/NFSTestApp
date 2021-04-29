@@ -1,4 +1,4 @@
-import { GET_REALTIME_USERS } from '../actions/types';
+import { GET_REALTIME_USERS } from '../actions/constants';
 
 const initialState = {
   users: [],

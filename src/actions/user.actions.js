@@ -1,4 +1,4 @@
-import { GET_REALTIME_USERS } from './types';
+import { GET_REALTIME_USERS } from './constants';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';

@@ -1,21 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
-import { signOut } from '../../../actions';
+import { signOut, getRealtimeUsers } from '../../../actions';
 import { useDispatch } from 'react-redux';
+import firebase from 'firebase';
 
 const AdminProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
   const { name, email, vinNumber, nfsCode } = auth;
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getRealtimeUsers(firebase.auth().currentUser.uid));
+  }, []);
+
   const signOutUser = () => {
     dispatch(signOut());
     navigation.replace('Log In');
   };
-  // console.log(auth);
+
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />
@@ -27,10 +32,6 @@ const AdminProfile = ({ navigation }) => {
     </View>
   );
 };
-
-// const mapStateToProps = state => ({
-//   user: state.user,
-// });
 
 export default AdminProfile;
 

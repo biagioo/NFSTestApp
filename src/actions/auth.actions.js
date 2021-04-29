@@ -48,6 +48,7 @@ export const signUp = user => {
 };
 
 // Sign In Action
+// DRY THIS (getSignedInUser)
 export const signIn = user => {
   return async dispatch => {
     firebase
@@ -77,6 +78,34 @@ export const signIn = user => {
           });
       })
       .catch(error => alert(error));
+  };
+};
+
+//Get Signed In User
+export const getSignedInUser = () => {
+  return async dispatch => {
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          console.log('made it to snapshot if statement', snapshot.data());
+          const user = {
+            name: snapshot.data().name,
+            email: snapshot.data().email,
+            nfsCode: snapshot.data().nfsCode,
+            vinNumber: snapshot.data().vinNumber,
+          };
+
+          dispatch({
+            type: SET_USER,
+            payload: { user },
+          });
+        }
+      })
+      .catch(error => console.log('error is:', error));
   };
 };
 

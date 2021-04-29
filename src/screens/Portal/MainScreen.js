@@ -1,15 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-
-import React from 'react';
+import firebase from 'firebase';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSignedInUser } from '../../actions';
 
 const MainScreen = props => {
   const auth = useSelector(state => state.auth);
-
   const { navigation } = props;
+  const dispatch = useDispatch();
   const { nfsCode } = auth;
+
+  useEffect(() => {
+    if (firebase.auth().currentUser && auth.email === '') {
+      dispatch(getSignedInUser());
+    }
+  }, []);
 
   const enterPortal = () => {
     if (nfsCode === 'NFS_AP!') {
@@ -19,12 +26,10 @@ const MainScreen = props => {
     }
   };
 
-  console.log('in main screen', auth);
-
-  if (auth === null) {
+  if (auth.email === null) {
     return <ActivityIndicator size='large' color='black' />;
   }
-
+  console.log('auth', auth);
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />

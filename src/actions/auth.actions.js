@@ -48,34 +48,13 @@ export const signUp = user => {
 };
 
 // Sign In Action
-// DRY THIS (getSignedInUser)
 export const signIn = user => {
   return async dispatch => {
     firebase
       .auth()
       .signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(firebase.auth().currentUser.uid)
-          .get()
-          .then(snapshot => {
-            if (snapshot.exists) {
-              //   console.log('snapshot', snapshot.data());
-              const user = {
-                name: snapshot.data().name,
-                email: snapshot.data().email,
-                nfsCode: snapshot.data().nfsCode,
-                vinNumber: snapshot.data().vinNumber,
-              };
-
-              dispatch({
-                type: SET_USER,
-                payload: { user },
-              });
-            }
-          });
+        dispatch(getSignedInUser());
       })
       .catch(error => alert(error));
   };
@@ -91,7 +70,6 @@ export const getSignedInUser = () => {
       .get()
       .then(snapshot => {
         if (snapshot.exists) {
-          console.log('made it to snapshot if statement', snapshot.data());
           const user = {
             name: snapshot.data().name,
             email: snapshot.data().email,

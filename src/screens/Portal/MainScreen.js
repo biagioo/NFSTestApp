@@ -29,7 +29,7 @@ const MainScreen = props => {
   if (auth.email === null) {
     return <ActivityIndicator size='large' color='black' />;
   }
-  console.log('auth', auth);
+
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />

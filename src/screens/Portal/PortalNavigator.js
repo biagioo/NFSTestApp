@@ -11,7 +11,9 @@ import AdminDashboardScreen from './AdminPortal/AdminDashboardScreen';
 import LoginScreen from './auth/LoginScreen';
 import RegisterScreen from './auth/RegisterScreen';
 import MainScreen from './MainScreen';
-import ChatScreen from './ChatScreen';
+// import ChatScreen from './ChatScreen';
+import AdminChatScreen from './AdminPortal/AdminChatScreen';
+import CustomerChatScreen from './CustomerPortal/CustomerChatScreen';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD_hY7ln70-ScZMitRzW22kZWLaBFwhm0s',
@@ -42,7 +44,11 @@ const PortalNavigator = ({ navigation }) => {
         />
         <Stack.Screen name='AdminDashboard' component={AdminDashboardScreen} />
         <Stack.Screen name='MainScreen' component={MainScreen} />
-        <Stack.Screen name='ChatScreen' component={ChatScreen} />
+        <Stack.Screen
+          name='CustomerChatScreen'
+          component={CustomerChatScreen}
+        />
+        <Stack.Screen name='AdminChatScreen' component={AdminChatScreen} />
       </Stack.Navigator>
     </Provider>
   );

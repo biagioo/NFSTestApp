@@ -11,6 +11,7 @@ import AdminDashboardScreen from './AdminPortal/AdminDashboardScreen';
 import LoginScreen from './auth/LoginScreen';
 import RegisterScreen from './auth/RegisterScreen';
 import MainScreen from './MainScreen';
+import ChatScreen from './ChatScreen';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD_hY7ln70-ScZMitRzW22kZWLaBFwhm0s',
@@ -35,12 +36,13 @@ const PortalNavigator = ({ navigation }) => {
       <Stack.Navigator initialRouteName='Log In' headerMode='none'>
         <Stack.Screen name='Log In' component={LoginScreen} />
         <Stack.Screen name='Register' component={RegisterScreen} />
-        <Stack.Screen name='MainScreen' component={MainScreen} />
         <Stack.Screen
           name='CustomerDashboard'
           component={CustomerDashboardScreen}
         />
         <Stack.Screen name='AdminDashboard' component={AdminDashboardScreen} />
+        <Stack.Screen name='MainScreen' component={MainScreen} />
+        <Stack.Screen name='ChatScreen' component={ChatScreen} />
       </Stack.Navigator>
     </Provider>
   );

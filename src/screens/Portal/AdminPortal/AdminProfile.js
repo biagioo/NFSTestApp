@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { signOut, getRealtimeUsers } from '../../../actions';
 import { useDispatch } from 'react-redux';
-import firebase from 'firebase';
 
 const AdminProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
@@ -13,7 +12,7 @@ const AdminProfile = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getRealtimeUsers(firebase.auth().currentUser.uid));
+    dispatch(getRealtimeUsers(nfsCode));
   }, []);
 
   const signOutUser = () => {

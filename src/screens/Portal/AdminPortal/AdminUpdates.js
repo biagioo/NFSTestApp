@@ -1,7 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements';
+import { ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { createGroup } from '../../../actions';
 import CustomListItem from '../../../components/Portal/CustomListItem';
@@ -22,7 +21,7 @@ const AdminUpdates = ({ navigation }) => {
     };
 
     dispatch(createGroup(groupInfo));
-    navigation.navigate('ChatScreen', { ...groupInfo });
+    navigation.navigate('AdminChatScreen', { ...groupInfo });
   };
 
   if (users === []) {
@@ -32,25 +31,29 @@ const AdminUpdates = ({ navigation }) => {
   }
   // console.log(navigation);
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      {users.map((user, index) => (
-        <CustomListItem
-          key={index}
-          index={index}
-          user={user}
-          initChat={initChat}
-        />
-      ))}
-    </ScrollView>
+    <SafeAreaView styl={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        {users.map((user, index) => (
+          <CustomListItem
+            key={index}
+            index={index}
+            user={user}
+            chat={initChat}
+          />
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default AdminUpdates;
 
 const styles = StyleSheet.create({
-  scrollViewContainer: {
+  container: {
     flex: 1,
-    paddingTop: '15%',
+  },
+  scrollViewContainer: {
+    height: '90%',
   },
 
   horizontal: {

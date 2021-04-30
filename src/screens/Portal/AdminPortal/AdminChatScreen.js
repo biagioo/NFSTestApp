@@ -98,6 +98,7 @@ const ChatScreen = props => {
                       }}
                     />
                     <Text style={styles.senderText}>{data.message}</Text>
+                    <Text style={styles.senderTextTime}>{data.name}</Text>
                   </View>
                 ) : (
                   <View key={id} style={styles.reciever}>
@@ -176,6 +177,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: 'black',
     fontWeight: '500',
+  },
+  senderTextTime: {
+    marginLeft: 10,
+    color: 'black',
+    fontSize: 8,
   },
   reciever: {
     margin: 15,

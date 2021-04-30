@@ -4,17 +4,16 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 // get users collection
-export const getRealtimeUsers = uid => {
+export const getRealtimeUsers = userNFSCode => {
   return async dispatch => {
     const db = firebase.firestore();
     db.collection('users').onSnapshot(querySnapshot => {
       const users = [];
       querySnapshot.forEach(doc => {
-        if (doc.data().uid !== uid) {
+        if (doc.data().nfsCode !== userNFSCode) {
           users.push(doc.data());
         }
       });
-      // console.log(users);
 
       dispatch({
         type: GET_REALTIME_USERS,
@@ -36,37 +35,16 @@ export const createGroup = groupInfo => {
     db.collection('groups')
       .doc(groupInfo.customerEmail)
       .set(groupInfo)
-      // .then(() => {
-      //   startChat(groupInfo.customerEmail);
-      // })
+
       .catch(err => {
         console.log('uh oh', err);
       });
   };
 };
 
-// export const startChat = customerEmail => {
-//   return aysnc => {
-//     const db = firebase.firestore();
-//     db.collection('groups')
-//     .doc(customerEmail)
-//     .collection('messages')
-//     .add()
-//   };
-// };
-
-//create/ retrieve group
-
-// export const createGroup = groupInfo => {
-//   return async dispatch => {
-//     const db = firebase.firestore();
-//     await db.collection('groups')
-//       .add({ chatWith: groupInfo.customerEmail })
-//       .then(() => {
-//         console.log('create group success');
-//       })
-//       .catch(err => {
-//         console.log('uh oh', err);
-//       });
-//   };
-// };
+export const getGroupMessages = customerEmail => {
+  return aysnc => {
+    const db = firebase.firestore();
+    db.collection('groups').doc(customerEmail).collection('messages');
+  };
+};

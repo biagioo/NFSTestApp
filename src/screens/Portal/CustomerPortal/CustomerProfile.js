@@ -1,16 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
-import { signOut } from '../../../actions';
+import { signOut, getRealtimeUsers } from '../../../actions';
+import {
+  findChatAndMessages,
+  getGroupMessages,
+} from '../../../actions/group.actions';
 
 const CustomerProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
-
   const { name, email, vinNumber, nfsCode } = auth;
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getRealtimeUsers(nfsCode));
+  }, []);
 
   const signOutUser = () => {
     dispatch(signOut());

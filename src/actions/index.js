@@ -1,2 +1,2 @@
-export * from './user.actions';
+export * from './group.actions';
 export * from './auth.actions';

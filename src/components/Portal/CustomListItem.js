@@ -2,28 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 
-const CustomListItem = ({
-  index,
-  user: { name, uid, nfsCode, vinNumber },
-  initchat,
-}) => {
-  //   const [chatMessages, setChatMessages] = useState([]);
-
-  //   useEffect(() => {
-  //     const unsubscribe = db
-  //       .collection('chats')
-  //       .doc(id)
-  //       .collection('messages')
-  //       .orderBy('timestamp', 'desc')
-  //       .onSnapshot(snapshot =>
-  //         setChatMessages(snapshot.docs.map(doc => doc.data()))
-  //       );
-
-  //     return unsubscribe;
-  //   });
-
+const CustomListItem = ({ index, user, initChat }) => {
+  const { name, uid, nfsCode, vinNumber, email } = user;
   return (
-    <ListItem onPress={() => console.log(uid)} key={index} bottomDivider>
+    <ListItem onPress={() => initChat(user)} key={index} bottomDivider>
       <Avatar
         rounded
         source={{

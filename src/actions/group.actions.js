@@ -1,4 +1,4 @@
-import { GET_REALTIME_USERS } from './constants';
+import { GET_REALTIME_USERS, SET_MESSAGES } from './constants';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -7,9 +7,9 @@ import 'firebase/firestore';
 export const getRealtimeUsers = userNFSCode => {
   return async dispatch => {
     const db = firebase.firestore();
-    db.collection('users').onSnapshot(querySnapshot => {
+    db.collection('users').onSnapshot(snapshot => {
       const users = [];
-      querySnapshot.forEach(doc => {
+      snapshot.forEach(doc => {
         if (doc.data().nfsCode !== userNFSCode) {
           users.push(doc.data());
         }
@@ -23,9 +23,25 @@ export const getRealtimeUsers = userNFSCode => {
   };
 };
 
-export const showGroups = () => {
-  return async => {
-    firebase.firestore().collection('groups');
+export const findChatAndMessages = customerEmail => {
+  return async dispatch => {
+    console.log('in find action');
+    firebase
+      .firestore()
+      .collection('groups')
+      .doc(customerEmail)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          // make call for messages
+          getGroupMessages(customerEmail);
+        } else {
+          console.log('else', snapshot);
+        }
+      })
+      .catch(err => {
+        console.log('error:', err);
+      });
   };
 };
 
@@ -42,9 +58,28 @@ export const createGroup = groupInfo => {
   };
 };
 
-export const getGroupMessages = customerEmail => {
-  return aysnc => {
+export const getGroupMessages = (customerEmail, adminEmail) => {
+  return async dispatch => {
     const db = firebase.firestore();
-    db.collection('groups').doc(customerEmail).collection('messages');
+    db.collection('groups')
+      .doc(customerEmail)
+      .collection('messages')
+      .onSnapshot(snapshot => {
+        const messages = [];
+        snapshot.forEach(doc => {
+          // console.log(doc);
+          if (
+            doc.data().email === customerEmail ||
+            doc.data().email === adminEmail
+          ) {
+            messages.push(doc.data());
+          }
+        });
+
+        dispatch({
+          type: SET_MESSAGES,
+          payload: { messages },
+        });
+      });
   };
 };

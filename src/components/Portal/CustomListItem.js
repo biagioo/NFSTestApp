@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 
-const CustomListItem = ({ index, user, initChat }) => {
+const CustomListItem = ({ index, user, chat }) => {
   const { name, uid, nfsCode, vinNumber, email } = user;
   return (
-    <ListItem onPress={() => initChat(user)} key={index} bottomDivider>
+    <ListItem onPress={() => chat(user)} key={index} bottomDivider>
       <Avatar
         rounded
         source={{

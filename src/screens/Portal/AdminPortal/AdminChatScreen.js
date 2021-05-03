@@ -54,6 +54,8 @@ const ChatScreen = props => {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         message: input,
         uid: auth.uid,
+        to: customerName,
+        from: auth.name,
         name: auth.name,
         email: auth.email,
       });
@@ -98,7 +100,6 @@ const ChatScreen = props => {
                       }}
                     />
                     <Text style={styles.senderText}>{data.message}</Text>
-                    <Text style={styles.senderTextTime}>{data.name}</Text>
                   </View>
                 ) : (
                   <View key={id} style={styles.reciever}>
@@ -114,7 +115,7 @@ const ChatScreen = props => {
                       }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
-                    <Text style={styles.recieverName}>{data.name}</Text>
+                    <Text style={styles.recieverName}>{data.from}</Text>
                   </View>
                 )
               )}
@@ -177,11 +178,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: 'black',
     fontWeight: '500',
-  },
-  senderTextTime: {
-    marginLeft: 10,
-    color: 'black',
-    fontSize: 8,
   },
   reciever: {
     margin: 15,

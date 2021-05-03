@@ -99,7 +99,6 @@ const CustomerChatScreen = props => {
                       }}
                     />
                     <Text style={styles.senderText}>{data.message}</Text>
-                    <Text style={styles.senderTextTime}>{data.from}</Text>
                   </View>
                 ) : (
                   <View key={id} style={styles.reciever}>
@@ -179,11 +178,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
   },
-  senderTextTime: {
-    marginLeft: 10,
-    color: 'black',
-    fontSize: 8,
-  },
   reciever: {
     margin: 15,
     padding: 15,
@@ -194,15 +188,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B68E6',
   },
   recieverName: {
-    left: 10,
-    fontSize: 10,
-    color: 'white',
-    paddingRight: 10,
+    marginLeft: 10,
+    fontSize: 12,
+    color: 'black',
+    zIndex: 2,
+    // paddingRight: 10,
   },
   recieverText: {
     color: 'white',
     marginLeft: 10,
-    marginBottom: 15,
+    marginBottom: 5,
     fontWeight: '500',
   },
   footer: {

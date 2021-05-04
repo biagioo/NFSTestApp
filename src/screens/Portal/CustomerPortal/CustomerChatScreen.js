@@ -29,6 +29,8 @@ const CustomerChatScreen = props => {
       .collection('groups')
       .doc(auth.email)
       .collection('messages')
+      .where('from', 'in', [name, auth.name])
+      // .where('to', 'in', [name, auth.name])
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot =>
         setMessages(
@@ -114,7 +116,7 @@ const CustomerChatScreen = props => {
                       }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
-                    <Text style={styles.recieverName}>{data.to}</Text>
+                    {/* <Text style={styles.recieverName}>{data.name}</Text> */}
                   </View>
                 )
               )}
@@ -125,6 +127,7 @@ const CustomerChatScreen = props => {
           <TextInput
             value={input}
             onChangeText={text => setInput(text)}
+            multiline={true}
             placeholder='NFS Performance'
             style={styles.textInput}
             onSubmitEditing={sendMessage}
@@ -185,19 +188,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     position: 'relative',
     alignSelf: 'flex-start',
-    backgroundColor: '#2B68E6',
+    backgroundColor: '#5273ab',
   },
   recieverName: {
     marginLeft: 10,
     fontSize: 12,
     color: 'black',
-    zIndex: 2,
-    // paddingRight: 10,
+    // zIndex: 2,
   },
   recieverText: {
     color: 'white',
     marginLeft: 10,
-    marginBottom: 5,
+
     fontWeight: '500',
   },
   footer: {

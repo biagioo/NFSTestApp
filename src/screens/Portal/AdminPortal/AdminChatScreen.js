@@ -115,7 +115,7 @@ const ChatScreen = props => {
                       }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
-                    <Text style={styles.recieverName}>{data.from}</Text>
+                    {/* <Text style={styles.recieverName}>{data.from}</Text> */}
                   </View>
                 )
               )}
@@ -126,6 +126,7 @@ const ChatScreen = props => {
           <TextInput
             value={input}
             onChangeText={text => setInput(text)}
+            multiline={true}
             placeholder='NFS Performance'
             style={styles.textInput}
             onSubmitEditing={sendMessage}
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     position: 'relative',
     alignSelf: 'flex-start',
-    backgroundColor: '#2B68E6',
+    backgroundColor: '#5273ab',
   },
   recieverName: {
     left: 10,
@@ -197,7 +198,6 @@ const styles = StyleSheet.create({
   recieverText: {
     color: 'white',
     marginLeft: 10,
-    marginBottom: 15,
     fontWeight: '500',
   },
   footer: {

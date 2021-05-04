@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -9,19 +9,36 @@ import {
   TextInput,
   Platform,
   Keyboard,
+  Image,
   Text,
   View,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase';
+import { StatusBar } from 'expo-status-bar';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
   const { name, email } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
 
   useLayoutEffect(() => {
     const unsubscribe = firebase
@@ -46,23 +63,42 @@ const CustomerChatScreen = props => {
 
   const sendMessage = () => {
     Keyboard.dismiss();
+    if (input !== '') {
+      firebase
+        .firestore()
+        .collection('groups')
+        .doc(auth.email)
+        .collection('conversations')
+        .doc(email)
+        .collection('messages')
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          message: input,
+          uid: auth.uid,
+          from: auth.name,
+          to: name,
+          email: auth.email,
+        });
+      setInput('');
+    }
+  };
 
-    firebase
-      .firestore()
-      .collection('groups')
-      .doc(auth.email)
-      .collection('conversations')
-      .doc(email)
-      .collection('messages')
-      .add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        message: input,
-        uid: auth.uid,
-        from: auth.name,
-        to: name,
-        email: auth.email,
-      });
-    setInput('');
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+      // setInput(prevState => {
+      //   return { ...prevState, ...result.uri };
+      // });
+    }
   };
 
   const goBack = () => {
@@ -71,6 +107,7 @@ const CustomerChatScreen = props => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <StatusBar style='dark' />
       <View style={styles.header}>
         <View style={styles.backBtn}>
           <TouchableOpacity onPress={goBack}>
@@ -122,6 +159,12 @@ const CustomerChatScreen = props => {
                   </View>
                 )
               )}
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
             </ScrollView>
           </>
         </TouchableWithoutFeedback>
@@ -137,6 +180,13 @@ const CustomerChatScreen = props => {
           />
           <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
             <Ionicons name='send' size={24} color='#595757' />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ paddingLeft: 10 }}
+            onPress={pickImage}
+            activeOpacity={0.5}
+          >
+            <Ionicons name='camera' size={24} color='#595757' />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

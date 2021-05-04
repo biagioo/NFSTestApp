@@ -15,6 +15,10 @@ const AdminProfile = ({ navigation }) => {
     dispatch(getRealtimeUsers(nfsCode));
   }, []);
 
+  const allowNotifications = () => {
+    alert('Mate, you good with notifications?');
+  };
+
   const signOutUser = () => {
     dispatch(signOut());
     navigation.replace('Log In');
@@ -23,6 +27,7 @@ const AdminProfile = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />
+      <Button title='Allow notifications' onPress={allowNotifications} />
       <Text>Admin Profile</Text>
       <Text>Welcome back, {name}</Text>
       <Text>The last 6 digits of your cars Vin are: {vinNumber}</Text>

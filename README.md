@@ -1,6 +1,6 @@
-- filter messages to only show if to and from are corresponding
+<!-- - filter messages to only show if to and from are corresponding
 
-  - this should be fixed once we refactor to use redux for messages. Currently restricted by firebase queries. Once we get messages in redux, we can pass redux messages to state and filter them to only show with proper to and froms. This is only an issue on the customer portal side of the app mainly because we use the customer email as document id for messages collection.
+  - this should be fixed once we refactor to use redux for messages. Currently restricted by firebase queries. Once we get messages in redux, we can pass redux messages to state and filter them to only show with proper to and froms. This is only an issue on the customer portal side of the app mainly because we use the customer email as document id for messages collection. -->
 
 - in admin updates, list users (sort) by most recent message (sent or received)
 - sending images

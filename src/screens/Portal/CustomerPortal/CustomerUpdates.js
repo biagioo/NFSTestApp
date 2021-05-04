@@ -33,7 +33,10 @@ const CustomerUpdates = ({ navigation }) => {
     };
 
     dispatch(createGroup(groupInfo));
-    navigation.navigate('CustomerChatScreen', { ...user });
+    navigation.navigate('CustomerChatScreen', {
+      name: user.name,
+      email: user.email,
+    });
   };
 
   return (

@@ -1,8 +1,7 @@
-import { GET_REALTIME_USERS, SET_MESSAGES } from '../actions/constants';
+import { GET_REALTIME_USERS, GET_REALTIME_GROUPS } from '../actions/constants';
 
 const initialState = {
   users: [],
-  messages: [],
 };
 
 export default (state = initialState, action) => {
@@ -11,11 +10,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         users: action.payload.users,
-      };
-    case SET_MESSAGES:
-      return {
-        ...state,
-        messages: action.payload.messages,
       };
     default:
       return state;

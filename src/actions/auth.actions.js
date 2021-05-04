@@ -29,6 +29,7 @@ export const signUp = user => {
             name: user.name,
             vinNumber: user.vinNumber,
             nfsCode: user.nfsCode,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           })
           .then(() => {
             const loggedInUser = {

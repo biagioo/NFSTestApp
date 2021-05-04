@@ -1,4 +1,4 @@
-import { GET_REALTIME_USERS, SET_MESSAGES } from './constants';
+import { GET_REALTIME_USERS } from './constants';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -7,19 +7,21 @@ import 'firebase/firestore';
 export const getRealtimeUsers = userNFSCode => {
   return async dispatch => {
     const db = firebase.firestore();
-    db.collection('users').onSnapshot(snapshot => {
-      const users = [];
-      snapshot.forEach(doc => {
-        if (doc.data().nfsCode !== userNFSCode) {
-          users.push(doc.data());
-        }
-      });
+    db.collection('users')
+      .orderBy('timestamp', 'desc')
+      .onSnapshot(snapshot => {
+        const users = [];
+        snapshot.forEach(doc => {
+          if (doc.data().nfsCode !== userNFSCode) {
+            users.push(doc.data());
+          }
+        });
 
-      dispatch({
-        type: GET_REALTIME_USERS,
-        payload: { users },
+        dispatch({
+          type: GET_REALTIME_USERS,
+          payload: { users },
+        });
       });
-    });
   };
 };
 

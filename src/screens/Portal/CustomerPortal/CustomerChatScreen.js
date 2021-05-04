@@ -19,7 +19,7 @@ import firebase from 'firebase';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { name } = props.route.params;
+  const { name, email } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
 
@@ -28,9 +28,9 @@ const CustomerChatScreen = props => {
       .firestore()
       .collection('groups')
       .doc(auth.email)
+      .collection('conversations')
+      .doc(email)
       .collection('messages')
-      .where('from', 'in', [name, auth.name])
-      // .where('to', 'in', [name, auth.name])
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot =>
         setMessages(
@@ -51,6 +51,8 @@ const CustomerChatScreen = props => {
       .firestore()
       .collection('groups')
       .doc(auth.email)
+      .collection('conversations')
+      .doc(email)
       .collection('messages')
       .add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -131,6 +133,7 @@ const CustomerChatScreen = props => {
             placeholder='NFS Performance'
             style={styles.textInput}
             onSubmitEditing={sendMessage}
+            allowFontScaling={true}
           />
           <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
             <Ionicons name='send' size={24} color='#595757' />

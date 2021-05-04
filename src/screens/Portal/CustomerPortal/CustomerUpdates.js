@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGroupMessages } from '../../../actions/group.actions';
+import { createGroup } from '../../../actions/group.actions';
 import CustomListItem from '../../../components/Portal/CustomListItem';
 
 const CustomerUpdates = ({ navigation }) => {
@@ -23,7 +23,16 @@ const CustomerUpdates = ({ navigation }) => {
   }
 
   const chat = user => {
-    dispatch(getGroupMessages(auth.email, user.email));
+    const groupInfo = {
+      adminId: user.uid,
+      adminName: user.name,
+      customerId: auth.uid,
+      customerEmail: auth.email,
+      customerName: auth.name,
+      customerVinNumb: auth.vinNumber,
+    };
+
+    dispatch(createGroup(groupInfo));
     navigation.navigate('CustomerChatScreen', { ...user });
   };
 

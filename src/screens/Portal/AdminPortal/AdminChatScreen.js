@@ -28,6 +28,8 @@ const ChatScreen = props => {
       .firestore()
       .collection('groups')
       .doc(customerEmail)
+      .collection('conversations')
+      .doc(auth.email)
       .collection('messages')
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot =>
@@ -49,6 +51,8 @@ const ChatScreen = props => {
       .firestore()
       .collection('groups')
       .doc(customerEmail)
+      .collection('conversations')
+      .doc(auth.email)
       .collection('messages')
       .add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),

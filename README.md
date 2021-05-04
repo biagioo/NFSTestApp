@@ -3,8 +3,13 @@
   - this should be fixed once we refactor to use redux for messages. Currently restricted by firebase queries. Once we get messages in redux, we can pass redux messages to state and filter them to only show with proper to and froms. This is only an issue on the customer portal side of the app mainly because we use the customer email as document id for messages collection. -->
 
 - in admin updates, list users (sort) by most recent message (sent or received)
-- sending images
-- updating profile
+- 3 tabs,
+  - Profile
+    - updating profile
+  - Updates
+    - "Post" an update, (image and caption)
+      - using storage
+  - Chat
 - notifications
 - show notification in updates part when a new message is received
 - search bar in admin updates

@@ -18,6 +18,7 @@ import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 import { StatusBar } from 'expo-status-bar';
+import * as MediaLibrary from 'expo-media-library';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
@@ -66,6 +67,12 @@ const CustomerChatScreen = props => {
         });
       setInput('');
     }
+  };
+
+  const saveImageToDevice = imageUrl => {
+    console.log('see the saveImageToDevice function');
+    // need a uri not a url Sadge
+    // MediaLibrary.saveToLibraryAsync(imageUrl);
   };
 
   const goBack = () => {
@@ -122,6 +129,17 @@ const CustomerChatScreen = props => {
                       }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
+                    {data.image ? (
+                      <TouchableOpacity
+                        onPress={() => saveImageToDevice(data.image)}
+                        activeOpacity={0.5}
+                      >
+                        <Image
+                          source={{ uri: data.image }}
+                          style={{ width: 200, height: 200, marginLeft: 10 }}
+                        />
+                      </TouchableOpacity>
+                    ) : null}
                     {/* <Text style={styles.recieverName}>{data.name}</Text> */}
                   </View>
                 )

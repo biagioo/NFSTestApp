@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase';
 import { Image } from 'react-native';
 import { Alert } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
@@ -146,26 +147,30 @@ const ChatScreen = props => {
   const sendMessage = () => {
     if (input === '') {
       Alert.alert('Warning', 'Message Cannot be blank');
-    } else {
+    }
+
+    if (image === null && input !== '') {
+      Keyboard.dismiss();
+      firebase
+        .firestore()
+        .collection('groups')
+        .doc(customerEmail)
+        .collection('conversations')
+        .doc(auth.email)
+        .collection('messages')
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          message: input,
+          uid: auth.uid,
+          to: customerName,
+          from: auth.name,
+          name: auth.name,
+          email: auth.email,
+        });
+      setInput('');
+    }
+    if (image !== null && input !== '') {
       uploadImage();
-      // Keyboard.dismiss();
-      // firebase
-      //   .firestore()
-      //   .collection('groups')
-      //   .doc(customerEmail)
-      //   .collection('conversations')
-      //   .doc(auth.email)
-      //   .collection('messages')
-      //   .add({
-      //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      //     message: input,
-      //     uid: auth.uid,
-      //     to: customerName,
-      //     from: auth.name,
-      //     name: auth.name,
-      //     email: auth.email,
-      //   });
-      // setInput('');
     }
   };
 
@@ -274,9 +279,13 @@ const ChatScreen = props => {
             style={styles.textInput}
             onSubmitEditing={sendMessage}
           ></TextInput>
-          <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
-            <Ionicons name='send' size={24} color='#595757' />
-          </TouchableOpacity>
+          {!uploading ? (
+            <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
+              <Ionicons name='send' size={24} color='#595757' />
+            </TouchableOpacity>
+          ) : (
+            <ActivityIndicator size='large' color='#000' />
+          )}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

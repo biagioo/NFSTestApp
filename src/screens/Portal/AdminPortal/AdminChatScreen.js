@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -15,13 +15,31 @@ import {
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase';
+import { Image } from 'react-native';
+import { Alert } from 'react-native';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
   const { customerEmail, customerName } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
 
   useLayoutEffect(() => {
     const unsubscribe = firebase
@@ -44,9 +62,60 @@ const ChatScreen = props => {
     return unsubscribe;
   }, [customerEmail]);
 
-  const sendMessage = () => {
-    Keyboard.dismiss();
+  const goBack = () => {
+    props.navigation.goBack();
+  };
 
+  const uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError('Network Request Failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', image, true);
+      xhr.send(null);
+    });
+
+    const ref = firebase
+      .storage()
+      .ref('images')
+      .child(`Admin-${auth.name}`)
+      .child(`customer-${customerEmail}/${new Date().toISOString()}`);
+    const snapshot = ref.put(blob);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      error => {
+        setUploading(false);
+        console.log(error);
+        blob.close();
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then(url => {
+          console.log('download url : ', url);
+          setUploading(false);
+          setImage(null);
+          Alert.alert('Upload Succes!', 'Your update has been posted');
+          blob.close();
+
+          submitMsg(url);
+
+          return url;
+        });
+      }
+    );
+  };
+
+  const submitMsg = imageUrl => {
+    Keyboard.dismiss();
     firebase
       .firestore()
       .collection('groups')
@@ -55,19 +124,64 @@ const ChatScreen = props => {
       .doc(auth.email)
       .collection('messages')
       .add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
         message: input,
         uid: auth.uid,
         to: customerName,
         from: auth.name,
         name: auth.name,
         email: auth.email,
+        image: imageUrl,
+      })
+      .then(() => {
+        console.log('Post added!!');
+        setInput('');
+        setImage(null);
+      })
+      .catch(e => {
+        console.log('error!!!!', e);
       });
-    setInput('');
   };
 
-  const goBack = () => {
-    props.navigation.goBack();
+  const sendMessage = () => {
+    if (input === '') {
+      Alert.alert('Warning', 'Message Cannot be blank');
+    } else {
+      uploadImage();
+      // Keyboard.dismiss();
+      // firebase
+      //   .firestore()
+      //   .collection('groups')
+      //   .doc(customerEmail)
+      //   .collection('conversations')
+      //   .doc(auth.email)
+      //   .collection('messages')
+      //   .add({
+      //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      //     message: input,
+      //     uid: auth.uid,
+      //     to: customerName,
+      //     from: auth.name,
+      //     name: auth.name,
+      //     email: auth.email,
+      //   });
+      // setInput('');
+    }
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   };
 
   return (
@@ -81,6 +195,17 @@ const ChatScreen = props => {
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerText}>{customerName}</Text>
         </View>
+        <TouchableOpacity
+          style={{ paddingLeft: 10 }}
+          onPress={image ? () => setImage('') : pickImage}
+          activeOpacity={0.5}
+        >
+          {image ? (
+            <Text>Clear Image</Text>
+          ) : (
+            <Ionicons name='camera' size={24} color='#595757' />
+          )}
+        </TouchableOpacity>
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -104,6 +229,14 @@ const ChatScreen = props => {
                       }}
                     />
                     <Text style={styles.senderText}>{data.message}</Text>
+                    {data.image ? (
+                      <TouchableOpacity>
+                        <Image
+                          source={{ uri: data.image }}
+                          style={{ width: 200, height: 200, marginLeft: 10 }}
+                        />
+                      </TouchableOpacity>
+                    ) : null}
                   </View>
                 ) : (
                   <View key={id} style={styles.reciever}>
@@ -126,15 +259,21 @@ const ChatScreen = props => {
             </ScrollView>
           </>
         </TouchableWithoutFeedback>
+        {image ? (
+          <Image
+            source={{ uri: image }}
+            style={{ width: 200, height: 200, marginLeft: 10 }}
+          />
+        ) : null}
         <View style={styles.footer}>
           <TextInput
             value={input}
             onChangeText={text => setInput(text)}
-            multiline={true}
+            multiline
             placeholder='NFS Performance'
             style={styles.textInput}
             onSubmitEditing={sendMessage}
-          />
+          ></TextInput>
           <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
             <Ionicons name='send' size={24} color='#595757' />
           </TouchableOpacity>
@@ -213,9 +352,10 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     bottom: 0,
+    // height: 40,
     height: 40,
     padding: 10,
-    color: 'grey',
+    color: 'black',
     marginRight: 15,
     borderRadius: 30,
     backgroundColor: '#ECECEC',

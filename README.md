@@ -5,19 +5,11 @@
 <!-- - in admin updates, list users (sort) by most recent message (sent or received)
   - instead, this is listed by most recent user created -->
 
-<!-- - 3 tabs,
-  - Profile
-    - updating profile
-  - Updates
-    - "Post" an update, (image and caption)
-      - using storage
-  - Chat -->
-
-Refactor everything in updates tab to work in chats tab.
+<!-- Refactor everything in updates tab to work in chats tab.
 
 - refactor firestore messages to have an image url key (see firestore for reference)
 - be able to see the text and image in the text field on adminchats
-- conditionially render an image in chat section if there is an image URl
+- conditionially render an image in chat section if there is an image URl -->
 
 - notifications
 - show notification icon when a new message is received or update is posted

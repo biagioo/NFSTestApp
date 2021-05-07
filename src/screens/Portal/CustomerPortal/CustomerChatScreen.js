@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -22,9 +22,10 @@ import * as MediaLibrary from 'expo-media-library';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { name, email } = props.route.params;
+  const { name, email, token } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const scrollViewRef = useRef();
 
   useLayoutEffect(() => {
     const unsubscribe = firebase
@@ -64,11 +65,31 @@ const CustomerChatScreen = props => {
           from: auth.name,
           to: name,
           email: auth.email,
+        })
+        .then(() => {
+          sendNotification(token, input);
         });
       setInput('');
     }
   };
+  const sendNotification = async (token, body) => {
+    const message = {
+      to: token,
+      sound: 'default',
+      title: `${auth.name}`,
+      body,
+    };
 
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip,deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  };
   const saveImageToDevice = imageUrl => {
     console.log('see the saveImageToDevice function');
     // need a uri not a url Sadge
@@ -98,7 +119,13 @@ const CustomerChatScreen = props => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <ScrollView contentContainerStyle={{ paddingTop: 15 }}>
+            <ScrollView
+              contentContainerStyle={{ paddingTop: 15 }}
+              ref={scrollViewRef}
+              onContentSizeChange={() =>
+                scrollViewRef.current.scrollToEnd({ animated: true })
+              }
+            >
               {messages.map(({ id, data }) =>
                 data.email === auth.email ? (
                   <View key={id} style={styles.sender}>

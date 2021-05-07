@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -23,11 +23,12 @@ import { ActivityIndicator } from 'react-native';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { customerEmail, customerName } = props.route.params;
+  const { customerEmail, customerName, token } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const scrollViewRef = useRef();
 
   useEffect(() => {
     (async () => {
@@ -138,6 +139,7 @@ const ChatScreen = props => {
         console.log('Post added!!');
         setInput('');
         setImage(null);
+        sendNotification(token);
       })
       .catch(e => {
         console.log('error!!!!', e);
@@ -166,11 +168,15 @@ const ChatScreen = props => {
           from: auth.name,
           name: auth.name,
           email: auth.email,
+        })
+        .then(() => {
+          sendNotification(token, input);
         });
       setInput('');
     }
     if (image !== null && input !== '') {
       uploadImage();
+      sendNotification(token, input);
     }
   };
 
@@ -187,6 +193,26 @@ const ChatScreen = props => {
     if (!result.cancelled) {
       setImage(result.uri);
     }
+  };
+
+  const sendNotification = async (token, body) => {
+    const message = {
+      to: token,
+      sound: 'default',
+      title: `${auth.name}`,
+      body,
+      // data: { data: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip,deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
   };
 
   return (
@@ -218,7 +244,13 @@ const ChatScreen = props => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <ScrollView contentContainerStyle={{ paddingTop: 15 }}>
+            <ScrollView
+              contentContainerStyle={{ paddingTop: 15 }}
+              ref={scrollViewRef}
+              onContentSizeChange={() =>
+                scrollViewRef.current.scrollToEnd({ animated: true })
+              }
+            >
               {messages.map(({ id, data }) =>
                 data.email === auth.email ? (
                   <View key={id} style={styles.sender}>

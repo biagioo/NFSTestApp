@@ -6,6 +6,7 @@ const initialState = {
   vinNumber: '',
   nfsCode: '',
   uid: '',
+  token: '',
   error: null,
 };
 

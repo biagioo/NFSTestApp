@@ -77,6 +77,7 @@ export const getSignedInUser = () => {
             email: snapshot.data().email,
             nfsCode: snapshot.data().nfsCode,
             vinNumber: snapshot.data().vinNumber,
+            token: snapshot.data().token,
             uid: snapshot.data().uid,
           };
 

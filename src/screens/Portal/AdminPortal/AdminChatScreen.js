@@ -216,7 +216,13 @@ const ChatScreen = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+        paddingTop: Platform.OS === 'android' ? 25 : 0,
+      }}
+    >
       <View style={styles.header}>
         <View style={styles.backBtn}>
           <TouchableOpacity onPress={goBack}>

@@ -16,13 +16,14 @@ const AdminProfile = ({ navigation }) => {
   const { name, email, vinNumber, nfsCode } = auth;
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getRealtimeUsers(nfsCode));
   }, []);
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
+    if (auth.token === '') {
+      registerForPushNotificationsAsync();
+    }
   }, []);
 
   const registerForPushNotificationsAsync = async () => {

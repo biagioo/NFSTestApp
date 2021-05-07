@@ -17,7 +17,6 @@
 - search bar in admin updates
 - where to put firebase config and stuff?
   - refactor firebase - Register refactor is only file still using firebase.js
-  - install and implement redux
 - Firebase security rules
 - conditional loading sign on log in and other customer portal spots
 - forgot password

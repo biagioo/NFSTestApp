@@ -11,7 +11,8 @@
 - be able to see the text and image in the text field on adminchats
 - conditionially render an image in chat section if there is an image URl -->
 
-- notifications
+<!-- - Push notifications -->
+
 - show notification icon when a new message is received or update is posted
 - search bar in admin updates
 - where to put firebase config and stuff?

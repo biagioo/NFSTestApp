@@ -30,12 +30,14 @@ const CustomerUpdates = ({ navigation }) => {
       customerEmail: auth.email,
       customerName: auth.name,
       customerVinNumb: auth.vinNumber,
+      token: user.token,
     };
 
     dispatch(createGroup(groupInfo));
     navigation.navigate('CustomerChatScreen', {
       name: user.name,
       email: user.email,
+      token: user.token,
     });
   };
 

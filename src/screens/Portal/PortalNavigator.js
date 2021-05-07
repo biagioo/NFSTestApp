@@ -3,17 +3,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-
+import { LogBox } from 'react-native';
 import firebase from 'firebase';
+
 import rootReducer from '../../reducers/index';
 import CustomerDashboardScreen from './CustomerPortal/CustomerDashboardScreen';
 import AdminDashboardScreen from './AdminPortal/AdminDashboardScreen';
 import LoginScreen from './auth/LoginScreen';
 import RegisterScreen from './auth/RegisterScreen';
 import MainScreen from './MainScreen';
-// import ChatScreen from './ChatScreen';
 import AdminChatScreen from './AdminPortal/AdminChatScreen';
 import CustomerChatScreen from './CustomerPortal/CustomerChatScreen';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD_hY7ln70-ScZMitRzW22kZWLaBFwhm0s',

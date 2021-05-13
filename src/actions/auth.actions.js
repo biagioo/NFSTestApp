@@ -29,6 +29,7 @@ export const signUp = user => {
             name: user.name,
             vinNumber: user.vinNumber,
             nfsCode: user.nfsCode,
+            profilePic: '',
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           })
           .then(() => {
@@ -38,6 +39,7 @@ export const signUp = user => {
               uid: currentUser.uid,
               vinNumber: user.vinNumber,
               nfsCode: user.nfsCode,
+              profilePic: '',
             };
             dispatch({
               type: SET_USER,
@@ -79,6 +81,7 @@ export const getSignedInUser = () => {
             vinNumber: snapshot.data().vinNumber,
             token: snapshot.data().token,
             uid: snapshot.data().uid,
+            profilePic: snapshot.data().profilePic,
           };
 
           dispatch({

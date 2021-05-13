@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { signOut, getRealtimeUsers } from '../../../actions';
@@ -28,9 +28,8 @@ const AdminProfile = ({ navigation }) => {
 
   const registerForPushNotificationsAsync = async () => {
     if (Constants.isDevice) {
-      const {
-        status: existingStatus,
-      } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
@@ -63,6 +62,8 @@ const AdminProfile = ({ navigation }) => {
     }
   };
 
+  const updateProfilePic = () => {};
+
   const signOutUser = () => {
     dispatch(signOut());
     navigation.replace('Log In');
@@ -72,6 +73,11 @@ const AdminProfile = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar style='dark' />
       <Text>Admin Profile</Text>
+      <Image
+        style={{ width: 200, height: 200 }}
+        source={require('../../../../assets/images/avatar.png')}
+      />
+      <Button title='Update Profile Pic' onPress={updateProfilePic} />
       <Text>Welcome back, {name}</Text>
       <Text>The last 6 digits of your cars Vin are: {vinNumber}</Text>
       <Text>Your email is: {email}</Text>

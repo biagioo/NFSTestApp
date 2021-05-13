@@ -23,7 +23,6 @@ const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [vinNumber, setVinNumber] = useState('');
   const [nfsCode, setNfsCode] = useState('');
-  const [profilePhoto, setProfilePhoto] = useState('');
   const dispatch = useDispatch();
 
   const emptyState = () => {
@@ -121,15 +120,7 @@ const RegisterScreen = ({ navigation }) => {
               }}
               onChangeText={text => setNfsCode(text)}
             />
-            <Input
-              style={styles.input}
-              placeholder={'Profile Photo (optional)'}
-              value={profilePhoto}
-              inputContainerStyle={{
-                borderBottomWidth: 0,
-              }}
-              onChangeText={text => setProfilePhoto(text)}
-            />
+
             <TouchableOpacity activeOpacity={0.5} onPress={register}>
               <View style={styles.button}>
                 <Text style={{ fontWeight: '600' }}>Register</Text>

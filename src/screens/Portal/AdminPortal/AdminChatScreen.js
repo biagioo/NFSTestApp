@@ -67,6 +67,11 @@ const ChatScreen = props => {
     props.navigation.goBack();
   };
 
+  const convertDate = utcSeconds => {
+    const myDate = new Date(utcSeconds * 1000);
+    return myDate.toLocaleString();
+  };
+
   const uploadImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -160,7 +165,7 @@ const ChatScreen = props => {
         .doc(auth.email)
         .collection('messages')
         .add({
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
           message: input,
           uid: auth.uid,
           to: customerName,
@@ -258,31 +263,64 @@ const ChatScreen = props => {
             >
               {messages.map(({ id, data }) =>
                 data.email === auth.email ? (
-                  <View key={id} style={styles.sender}>
-                    <Text style={styles.senderText}>{data.message}</Text>
-                    {data.image ? (
-                      <TouchableOpacity>
-                        <Image
-                          source={{ uri: data.image }}
-                          style={{ width: 200, height: 200, marginLeft: 10 }}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
+                  <View key={id}>
+                    <View style={styles.sender}>
+                      <Avatar
+                        position='absolute'
+                        bottom={-15}
+                        right={-5}
+                        rounded
+                        size={30}
+                        source={{
+                          uri: auth.profilePic,
+                        }}
+                      />
+                      <Text style={styles.senderText}>{data.message}</Text>
+                      {data.image ? (
+                        <TouchableOpacity>
+                          <Image
+                            source={{ uri: data.image }}
+                            style={{ width: 200, height: 200, marginLeft: 10 }}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 9,
+                        alignSelf: 'flex-end',
+                        fontWeight: '400',
+                        paddingRight: '5%',
+                      }}
+                    >
+                      {convertDate(data.timestamp.seconds)}
+                    </Text>
                   </View>
                 ) : (
-                  <View key={id} style={styles.reciever}>
-                    <Avatar
-                      position='absolute'
-                      bottom={-15}
-                      left={-5}
-                      rounded
-                      size={30}
-                      source={{
-                        uri: profilePic,
+                  <View key={id}>
+                    <View style={styles.reciever}>
+                      <Avatar
+                        position='absolute'
+                        bottom={-15}
+                        left={-5}
+                        rounded
+                        size={30}
+                        source={{
+                          uri: profilePic,
+                        }}
+                      />
+                      <Text style={styles.recieverText}>{data.message}</Text>
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 9,
+                        alignSelf: 'flex-start',
+                        fontWeight: '400',
+                        paddingLeft: '5%',
                       }}
-                    />
-                    <Text style={styles.recieverText}>{data.message}</Text>
-                    {/* <Text style={styles.recieverName}>{data.from}</Text> */}
+                    >
+                      {convertDate(data.timestamp.seconds)}
+                    </Text>
                   </View>
                 )
               )}
@@ -343,17 +381,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sender: {
+    margin: 15,
     padding: 15,
-    marginRight: 15,
-    borderRadius: 20,
-    marginBottom: 20,
     maxWidth: '80%',
+    borderRadius: 20,
     position: 'relative',
     alignSelf: 'flex-end',
     backgroundColor: '#5273ab',
   },
   senderText: {
-    marginLeft: 10,
     color: 'white',
     fontWeight: '500',
   },

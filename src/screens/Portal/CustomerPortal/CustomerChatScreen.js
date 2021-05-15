@@ -99,6 +99,10 @@ const CustomerChatScreen = props => {
   const goBack = () => {
     props.navigation.goBack();
   };
+  const convertDate = utcSeconds => {
+    const myDate = new Date(utcSeconds * 1000);
+    return myDate.toLocaleString();
+  };
 
   return (
     <SafeAreaView
@@ -134,34 +138,67 @@ const CustomerChatScreen = props => {
             >
               {messages.map(({ id, data }) =>
                 data.email === auth.email ? (
-                  <View key={id} style={styles.sender}>
-                    <Text style={styles.senderText}>{data.message}</Text>
+                  <View key={id}>
+                    <View style={styles.sender}>
+                      <Avatar
+                        position='absolute'
+                        bottom={-15}
+                        right={-5}
+                        rounded
+                        size={30}
+                        source={{
+                          uri: auth.profilePic,
+                        }}
+                      />
+                      <Text style={styles.senderText}>{data.message}</Text>
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 9,
+                        alignSelf: 'flex-end',
+                        fontWeight: '400',
+                        paddingRight: '5%',
+                      }}
+                    >
+                      {convertDate(data.timestamp.seconds)}
+                    </Text>
                   </View>
                 ) : (
-                  <View key={id} style={styles.reciever}>
-                    <Avatar
-                      position='absolute'
-                      bottom={-15}
-                      left={-5}
-                      rounded
-                      size={30}
-                      source={{
-                        uri: profilePic,
+                  <View key={id}>
+                    <View style={styles.reciever}>
+                      <Avatar
+                        position='absolute'
+                        bottom={-15}
+                        left={-5}
+                        rounded
+                        size={30}
+                        source={{
+                          uri: profilePic,
+                        }}
+                      />
+                      <Text style={styles.recieverText}>{data.message}</Text>
+                      {data.image ? (
+                        <TouchableOpacity
+                          onPress={() => saveImageToDevice(data.image)}
+                          activeOpacity={0.5}
+                        >
+                          <Image
+                            source={{ uri: data.image }}
+                            style={{ width: 200, height: 200, marginLeft: 10 }}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 9,
+                        alignSelf: 'flex-start',
+                        fontWeight: '400',
+                        paddingLeft: '5%',
                       }}
-                    />
-                    <Text style={styles.recieverText}>{data.message}</Text>
-                    {data.image ? (
-                      <TouchableOpacity
-                        onPress={() => saveImageToDevice(data.image)}
-                        activeOpacity={0.5}
-                      >
-                        <Image
-                          source={{ uri: data.image }}
-                          style={{ width: 200, height: 200, marginLeft: 10 }}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                    {/* <Text style={styles.recieverName}>{data.name}</Text> */}
+                    >
+                      {convertDate(data.timestamp.seconds)}
+                    </Text>
                   </View>
                 )
               )}

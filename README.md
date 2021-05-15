@@ -13,24 +13,37 @@
 
 <!-- - Push notifications -->
 
-- show notification icon when a new message is received or update is posted
 - search bar in admin updates
+
 - where to put firebase config and stuff?
+
   - refactor firebase - Register refactor is only file still using firebase.js
+
 - Firebase security rules
+
 - conditional loading sign on log in and other customer portal spots
+
 - forgot password
-- portal styling
+
+- portal
+
+  - message time
+  - take a pick to send (not just choose from camera roll)
+  - show notification icon when a new message is received or update is posted
+  - expand message picture onPress
+
 - android appearance fix
+
 - geo location for contact us
 
   - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)
   - seperate component for Mapview with logic in it
 
 - profile pic
-  - save default pic to assests or in firebase storage
-  - change hard code default pro pic
-  - auto save default pic in registration
+  <!-- - save default pic to assests or in firebase storage -->
+  <!-- - change hard code default pro pic -->
+  <!-- - auto save default pic in registration -->
   - update profile pic in profile page
-  - need to get Download URL of avatar from fire storage
+  - delete old pic when profile pic updated
+  <!-- - need to get Download URL of avatar from fire storage -->
 - fix splash screen

@@ -22,7 +22,7 @@ import * as MediaLibrary from 'expo-media-library';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { name, email, token } = props.route.params;
+  const { name, email, token, profilePic } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const scrollViewRef = useRef();
@@ -101,7 +101,13 @@ const CustomerChatScreen = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+        paddingTop: Platform.OS === 'android' ? 25 : 0,
+      }}
+    >
       <StatusBar style='dark' />
       <View style={styles.header}>
         <View style={styles.backBtn}>
@@ -129,17 +135,6 @@ const CustomerChatScreen = props => {
               {messages.map(({ id, data }) =>
                 data.email === auth.email ? (
                   <View key={id} style={styles.sender}>
-                    <Avatar
-                      position='absolute'
-                      bottom={-15}
-                      right={-5}
-                      rounded
-                      size={30}
-                      source={{
-                        uri:
-                          'https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png',
-                      }}
-                    />
                     <Text style={styles.senderText}>{data.message}</Text>
                   </View>
                 ) : (
@@ -151,8 +146,7 @@ const CustomerChatScreen = props => {
                       rounded
                       size={30}
                       source={{
-                        uri:
-                          'https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png',
+                        uri: profilePic,
                       }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
@@ -226,11 +220,11 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
     position: 'relative',
     alignSelf: 'flex-end',
-    backgroundColor: '#ECECEC',
+    backgroundColor: '#5273ab',
   },
   senderText: {
     marginLeft: 10,
-    color: 'black',
+    color: 'white',
     fontWeight: '500',
   },
   reciever: {
@@ -240,18 +234,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     position: 'relative',
     alignSelf: 'flex-start',
-    backgroundColor: '#5273ab',
+    backgroundColor: '#ECECEC',
   },
   recieverName: {
     marginLeft: 10,
     fontSize: 12,
-    color: 'black',
-    // zIndex: 2,
+    color: 'white',
   },
   recieverText: {
-    color: 'white',
+    color: 'black',
     marginLeft: 10,
-
     fontWeight: '500',
   },
   footer: {

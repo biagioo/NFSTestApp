@@ -23,7 +23,7 @@ import { ActivityIndicator } from 'react-native';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { customerEmail, customerName, token } = props.route.params;
+  const { customerEmail, customerName, token, profilePic } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
@@ -33,9 +33,8 @@ const ChatScreen = props => {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
         }
@@ -260,17 +259,6 @@ const ChatScreen = props => {
               {messages.map(({ id, data }) =>
                 data.email === auth.email ? (
                   <View key={id} style={styles.sender}>
-                    <Avatar
-                      position='absolute'
-                      bottom={-15}
-                      right={-5}
-                      rounded
-                      size={30}
-                      source={{
-                        uri:
-                          'https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png',
-                      }}
-                    />
                     <Text style={styles.senderText}>{data.message}</Text>
                     {data.image ? (
                       <TouchableOpacity>
@@ -290,8 +278,7 @@ const ChatScreen = props => {
                       rounded
                       size={30}
                       source={{
-                        uri:
-                          'https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png',
+                        uri: profilePic,
                       }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
@@ -363,11 +350,11 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
     position: 'relative',
     alignSelf: 'flex-end',
-    backgroundColor: '#ECECEC',
+    backgroundColor: '#5273ab',
   },
   senderText: {
     marginLeft: 10,
-    color: 'black',
+    color: 'white',
     fontWeight: '500',
   },
   reciever: {
@@ -377,7 +364,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     position: 'relative',
     alignSelf: 'flex-start',
-    backgroundColor: '#5273ab',
+    backgroundColor: '#ECECEC',
   },
   recieverName: {
     left: 10,
@@ -386,7 +373,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   recieverText: {
-    color: 'white',
+    color: 'black',
     marginLeft: 10,
     fontWeight: '500',
   },

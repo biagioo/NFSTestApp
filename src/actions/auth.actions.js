@@ -33,22 +33,32 @@ export const signUp = user => {
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           })
           .then(() => {
-            const loggedInUser = {
-              email: user.email,
-              name: user.name,
-              uid: currentUser.uid,
-              vinNumber: user.vinNumber,
-              nfsCode: user.nfsCode,
-              profilePic: '',
-            };
-            dispatch({
-              type: SET_USER,
-              payload: { user: loggedInUser },
-            });
+            setDefaultProfilePic(currentUser.uid);
+          })
+          .then(() => {
+            getSignedInUser();
           });
       })
       .catch(error => alert(error.message));
   };
+};
+
+const setDefaultProfilePic = uid => {
+  const storage = firebase.storage();
+  const defAvatar = storage.ref('images/').child(`defaultAvatar/avatar.png`);
+  defAvatar
+    .getDownloadURL()
+    .then(url => {
+      firebase.firestore().collection('users').doc(uid).set(
+        {
+          profilePic: url,
+        },
+        { merge: true }
+      );
+    })
+    .catch(e => {
+      console.log('error', e);
+    });
 };
 
 // Sign In Action

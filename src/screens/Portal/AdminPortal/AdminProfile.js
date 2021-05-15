@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { Platform, StyleSheet, Text, View, Image } from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { signOut, getRealtimeUsers } from '../../../actions';
 import { useDispatch } from 'react-redux';
-
+import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
 
 import Constants from 'expo-constants';
@@ -13,7 +13,9 @@ import firebase from 'firebase';
 
 const AdminProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
-  const { name, email, vinNumber, nfsCode } = auth;
+  const { name, email, vinNumber, nfsCode, profilePic, uid } = auth;
+  const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -21,7 +23,7 @@ const AdminProfile = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (auth.token === '') {
+    if (auth.token === '' || auth.token === undefined) {
       registerForPushNotificationsAsync();
     }
   }, []);
@@ -62,7 +64,70 @@ const AdminProfile = ({ navigation }) => {
     }
   };
 
-  const updateProfilePic = () => {};
+  const uploadImage = async () => {
+    console.log('here');
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError('Network Request Failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', image, true);
+      xhr.send(null);
+    });
+
+    const ref = firebase
+      .storage()
+      .ref('images/')
+      .child(`profilePictures/`)
+      .child(`admin-${email}/${new Date().toISOString()}`);
+    const snapshot = ref.put(blob);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      error => {
+        setUploading(false);
+        console.log(error);
+        blob.close();
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then(url => {
+          console.log('download url : ', url);
+          firebase.firestore().collection('users').doc(uid).set(
+            {
+              profilePic: url,
+            },
+            { merge: true }
+          );
+          setUploading(false);
+          Alert.alert('Upload Succes!', 'Your update has been posted');
+          blob.close();
+
+          return url;
+        });
+      }
+    );
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   const signOutUser = () => {
     dispatch(signOut());
@@ -72,12 +137,29 @@ const AdminProfile = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />
-      <Text>Admin Profile</Text>
-      <Image
-        style={{ width: 200, height: 200 }}
-        source={require('../../../../assets/images/avatar.png')}
+      <Text>{`${name}'s Profile`}</Text>
+
+      <Image style={{ width: 200, height: 200 }} source={{ uri: profilePic }} />
+
+      <Button
+        style={{ margin: 20 }}
+        title='Pick a new Profile Pic'
+        onPress={pickImage}
       />
-      <Button title='Update Profile Pic' onPress={updateProfilePic} />
+      {image ? (
+        <Image style={{ width: 200, height: 200 }} source={{ uri: image }} />
+      ) : null}
+
+      <Button
+        style={{ marginTop: 20 }}
+        title='Confirm Profile Pic'
+        onPress={uploadImage}
+      />
+      {/* <Button
+        style={{ marginTop: 20 }}
+        title='Default Av'
+        onPress={getDefAvatar}
+      /> */}
       <Text>Welcome back, {name}</Text>
       <Text>The last 6 digits of your cars Vin are: {vinNumber}</Text>
       <Text>Your email is: {email}</Text>

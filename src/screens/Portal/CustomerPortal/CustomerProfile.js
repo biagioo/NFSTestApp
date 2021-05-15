@@ -108,6 +108,7 @@ const CustomerProfile = ({ navigation }) => {
       () => {
         snapshot.snapshot.ref.getDownloadURL().then(url => {
           console.log('download url : ', url);
+          setImage(null);
           firebase.firestore().collection('users').doc(uid).set(
             {
               profilePic: url,
@@ -142,28 +143,22 @@ const CustomerProfile = ({ navigation }) => {
     navigation.replace('Log In');
   };
 
-  console.log(profilePic);
+  console.log(auth);
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />
       <Text>Customer Profile</Text>
-      {profilePic === '' ? (
-        <Image
-          style={{ width: 200, height: 200 }}
-          source={require('../../../../assets/images/avatar.png')}
-        />
-      ) : (
-        <Image
-          style={{ width: 200, height: 200 }}
-          source={{ uri: profilePic }}
-        />
-      )}
+
+      <Image style={{ width: 200, height: 200 }} source={{ uri: profilePic }} />
 
       <Button
         style={{ margin: 20 }}
         title='Pick a new Profile Pic'
         onPress={pickImage}
       />
+      {image ? (
+        <Image style={{ width: 200, height: 200 }} source={{ uri: image }} />
+      ) : null}
       <Button
         style={{ marginTop: 20 }}
         title='Confirm Profile Pic'

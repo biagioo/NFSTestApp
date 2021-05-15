@@ -38,6 +38,7 @@ const CustomerUpdates = ({ navigation }) => {
       name: user.name,
       email: user.email,
       token: user.token,
+      profilePic: user.profilePic,
     });
   };
 

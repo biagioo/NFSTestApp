@@ -3,16 +3,24 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 
 const CustomListItem = ({ index, user, chat }) => {
-  const { name, uid, nfsCode, vinNumber, email } = user;
+  const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
   return (
     <ListItem onPress={() => chat(user)} key={index} bottomDivider>
-      <Avatar
-        rounded
-        source={{
-          uri:
-            'https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png',
-        }}
-      />
+      {profilePic ? (
+        <Avatar
+          rounded
+          source={{
+            uri: profilePic,
+          }}
+        />
+      ) : (
+        <Avatar
+          rounded
+          source={{
+            uri: 'https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png',
+          }}
+        />
+      )}
       <ListItem.Content>
         <ListItem.Title style={{ fontWeight: '800' }}>{name}</ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>

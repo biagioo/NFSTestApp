@@ -303,7 +303,11 @@ const ChatScreen = props => {
                         <TouchableOpacity>
                           <Image
                             source={{ uri: data.image }}
-                            style={{ width: 200, height: 200, marginLeft: 10 }}
+                            style={{
+                              width: 200,
+                              height: 200,
+                              marginLeft: 10,
+                            }}
                           />
                         </TouchableOpacity>
                       ) : null}
@@ -316,7 +320,9 @@ const ChatScreen = props => {
                         paddingRight: '5%',
                       }}
                     >
-                      {convertDate(data.timestamp.seconds)}
+                      {data.timestamp
+                        ? convertDate(data.timestamp.seconds)
+                        : 'loading...'}
                     </Text>
                   </View>
                 ) : (
@@ -342,7 +348,9 @@ const ChatScreen = props => {
                         paddingLeft: '5%',
                       }}
                     >
-                      {convertDate(data.timestamp.seconds)}
+                      {data.timestamp
+                        ? convertDate(data.timestamp.seconds)
+                        : 'loading...'}
                     </Text>
                   </View>
                 )

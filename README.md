@@ -29,9 +29,11 @@
 
   <!-- - message time -->
 
-  - take a pick to send (not just choose from camera roll)
-  - show notification icon when a new message is received or update is posted
+  <!-- - take a pick to send (not just choose from camera roll) -->
+
   - expand message picture onPress
+
+  - show notification icon when a new message is received or update is posted
 
 - android appearance fix
 

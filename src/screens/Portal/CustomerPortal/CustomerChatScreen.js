@@ -160,7 +160,9 @@ const CustomerChatScreen = props => {
                         paddingRight: '5%',
                       }}
                     >
-                      {convertDate(data.timestamp.seconds)}
+                      {data.timestamp
+                        ? convertDate(data.timestamp.seconds)
+                        : 'loading...'}
                     </Text>
                   </View>
                 ) : (
@@ -197,7 +199,9 @@ const CustomerChatScreen = props => {
                         paddingLeft: '5%',
                       }}
                     >
-                      {convertDate(data.timestamp.seconds)}
+                      {data.timestamp
+                        ? convertDate(data.timestamp.seconds)
+                        : 'loading...'}
                     </Text>
                   </View>
                 )

@@ -18,6 +18,7 @@ const AdminUpdates = ({ navigation }) => {
       customerEmail: customer.email,
       customerName: customer.name,
       customerVinNumb: customer.vinNumber,
+      profilePic: customer.profilePic,
       token: customer.token,
     };
 

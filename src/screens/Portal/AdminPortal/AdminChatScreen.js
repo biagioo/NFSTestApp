@@ -35,6 +35,7 @@ const ChatScreen = props => {
       if (Platform.OS !== 'web') {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
+        await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
         }
@@ -199,6 +200,21 @@ const ChatScreen = props => {
     }
   };
 
+  const takePic = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   const sendNotification = async (token, body) => {
     const message = {
       to: token,
@@ -244,8 +260,15 @@ const ChatScreen = props => {
           {image ? (
             <Text>Clear Image</Text>
           ) : (
-            <Ionicons name='camera' size={24} color='#595757' />
+            <Ionicons name='images-outline' size={24} color='#595757' />
           )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ paddingLeft: 10 }}
+          onPress={image ? () => setImage('') : takePic}
+          activeOpacity={0.5}
+        >
+          {image ? null : <Ionicons name='camera' size={24} color='#595757' />}
         </TouchableOpacity>
       </View>
       <KeyboardAvoidingView

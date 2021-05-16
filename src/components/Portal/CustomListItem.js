@@ -4,6 +4,8 @@ import { ListItem, Avatar } from 'react-native-elements';
 
 const CustomListItem = ({ index, user, chat }) => {
   const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
+  const [newMsgNotification, setNewMsgNotification] = useState(true);
+
   return (
     <ListItem onPress={() => chat(user)} key={index} bottomDivider>
       {profilePic ? (
@@ -26,6 +28,9 @@ const CustomListItem = ({ index, user, chat }) => {
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
           {nfsCode === 'NFS_AP!' ? 'Admin' : `Vin Number: ${vinNumber}`}
         </ListItem.Subtitle>
+        {newMsgNotification ? (
+          <View style={styles.newMsgNotificationCircle}></View>
+        ) : null}
       </ListItem.Content>
     </ListItem>
   );
@@ -33,4 +38,13 @@ const CustomListItem = ({ index, user, chat }) => {
 
 export default CustomListItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  newMsgNotificationCircle: {
+    backgroundColor: 'red',
+    width: 20,
+    height: 20,
+    borderRadius: 80,
+    alignSelf: 'flex-end',
+    position: 'absolute',
+  },
+});

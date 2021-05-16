@@ -17,7 +17,7 @@
 
 - where to put firebase config and stuff?
 
-  - refactor firebase - Register refactor is only file still using firebase.js
+  <!-- - refactor firebase - Register refactor is only file still using firebase.js -->
 
 - Firebase security rules
 
@@ -27,13 +27,12 @@
 
 - portal
 
-  <!-- - message time -->
-
-  <!-- - take a pick to send (not just choose from camera roll) -->
-
   - expand message picture onPress
-
+  - play/ upload videos
   - show notification icon when a new message is received or update is posted
+  - use redux, read field in msg t or f value, send to redux, when chat screen is open make true
+    <!-- - message time -->
+    <!-- - take a pick to send (not just choose from camera roll) -->
 
 - android appearance fix
 

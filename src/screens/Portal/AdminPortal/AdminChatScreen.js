@@ -30,6 +30,7 @@ const ChatScreen = props => {
   const [uploading, setUploading] = useState(false);
   const scrollViewRef = useRef();
 
+  // console.log(messages);
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -139,6 +140,7 @@ const ChatScreen = props => {
         name: auth.name,
         email: auth.email,
         image: imageUrl,
+        toRead: false,
       })
       .then(() => {
         console.log('Post added!!');
@@ -173,6 +175,7 @@ const ChatScreen = props => {
           from: auth.name,
           name: auth.name,
           email: auth.email,
+          toRead: false,
         })
         .then(() => {
           sendNotification(token, input);
@@ -185,6 +188,26 @@ const ChatScreen = props => {
     }
   };
 
+  const readMsg = docId => {
+    firebase
+      .firestore()
+      .collection('groups')
+      .doc(customerEmail)
+      .collection('conversations')
+      .doc(auth.email)
+      .collection('messages')
+      .doc(`${docId}`)
+      .update({
+        toRead: true,
+      })
+      .then(() => {
+        console.log('Document successfully updated!');
+      })
+      .catch(error => {
+        // The document probably doesn't exist.
+        console.error('Error updating document: ', error);
+      });
+  };
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -327,6 +350,7 @@ const ChatScreen = props => {
                   </View>
                 ) : (
                   <View key={id}>
+                    {data.toRead === false ? readMsg(id) : null}
                     <View style={styles.reciever}>
                       <Avatar
                         position='absolute'

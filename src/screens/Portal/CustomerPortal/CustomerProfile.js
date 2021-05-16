@@ -143,7 +143,6 @@ const CustomerProfile = ({ navigation }) => {
     navigation.replace('Log In');
   };
 
-  console.log(auth);
   return (
     <View style={styles.container}>
       <StatusBar style='dark' />

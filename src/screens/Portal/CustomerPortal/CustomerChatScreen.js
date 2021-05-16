@@ -65,12 +65,33 @@ const CustomerChatScreen = props => {
           from: auth.name,
           to: name,
           email: auth.email,
+          toRead: false,
         })
         .then(() => {
           sendNotification(token, input);
         });
       setInput('');
     }
+  };
+  const readMsg = docId => {
+    firebase
+      .firestore()
+      .collection('groups')
+      .doc(auth.email)
+      .collection('conversations')
+      .doc(email)
+      .collection('messages')
+      .doc(`${docId}`)
+      .update({
+        toRead: true,
+      })
+      .then(() => {
+        console.log('Document successfully updated!');
+      })
+      .catch(error => {
+        // The document probably doesn't exist.
+        console.error('Error updating document: ', error);
+      });
   };
   const sendNotification = async (token, body) => {
     const message = {
@@ -167,6 +188,7 @@ const CustomerChatScreen = props => {
                   </View>
                 ) : (
                   <View key={id}>
+                    {data.toRead === false ? readMsg(id) : null}
                     <View style={styles.reciever}>
                       <Avatar
                         position='absolute'

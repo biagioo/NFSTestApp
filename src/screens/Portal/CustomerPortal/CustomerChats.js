@@ -43,7 +43,13 @@ const CustomerUpdates = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView styl={styles.container}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+        paddingTop: Platform.OS === 'android' ? 25 : 0,
+      }}
+    >
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         {users.map((user, index) => (
           <CustomListItem key={index} index={index} user={user} chat={chat} />

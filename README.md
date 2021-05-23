@@ -13,39 +13,48 @@
 
 <!-- - Push notifications -->
 
-- search bar in admin updates
-
 - where to put firebase config and stuff?
 
   <!-- - refactor firebase - Register refactor is only file still using firebase.js -->
 
 - Firebase security rules
 
-- conditional loading sign on log in and other customer portal spots
-
 - forgot password
 
 - portal
 
-  - expand message picture onPress
   - play/ upload videos
-  - show notification icon when a new message is received or update is posted
-  - use redux, read field in msg t or f value, send to redux, when chat screen is open make true
+      <!-- - use redux, read field in msg t or f value, send to redux, when chat screen is open make true -->
     <!-- - message time -->
     <!-- - take a pick to send (not just choose from camera roll) -->
-
-- android appearance fix
-
-- geo location for contact us
-
-  - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)
-  - seperate component for Mapview with logic in it
 
 - profile pic
   <!-- - save default pic to assests or in firebase storage -->
   <!-- - change hard code default pro pic -->
   <!-- - auto save default pic in registration -->
-  - update profile pic in profile page
   - delete old pic when profile pic updated
   <!-- - need to get Download URL of avatar from fire storage -->
 - fix splash screen
+
+DO BEFORE FRIDAY:
+
+<!-- - style profile page -->
+
+- update profile pic in profile page
+
+- conditional loading sign on log in and other customer portal spots
+  - just do it on pics for now so it looks better
+- search bar in admin updates
+- expand message picture onPress
+<!-- - android appearance fix -->
+
+- show notification icon when a new message is received or update is posted
+
+  - can't use redux because it shows red dot for all users, need component state on custom list item.
+  - new message puts chat at top
+
+  For this to work I need to get each chats messages ion the chats screen and see if the last message toRead value is false, if it is show red dot and push to the top of the chats?
+
+- geo location for contact us
+  - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)
+  - seperate component for Mapview with logic in it

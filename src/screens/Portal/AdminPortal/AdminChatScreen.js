@@ -200,14 +200,12 @@ const ChatScreen = props => {
       .update({
         toRead: true,
       })
-      .then(() => {
-        console.log('Document successfully updated!');
-      })
       .catch(error => {
         // The document probably doesn't exist.
         console.error('Error updating document: ', error);
       });
   };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -244,7 +242,6 @@ const ChatScreen = props => {
       sound: 'default',
       title: `${auth.name}`,
       body,
-      // data: { data: 'goes here' },
     };
 
     await fetch('https://exp.host/--/api/v2/push/send', {
@@ -276,7 +273,7 @@ const ChatScreen = props => {
           <Text style={styles.headerText}>{customerName}</Text>
         </View>
         <TouchableOpacity
-          style={{ paddingLeft: 10 }}
+          style={styles.cameraRollBtn}
           onPress={image ? () => setImage('') : pickImage}
           activeOpacity={0.5}
         >
@@ -287,7 +284,7 @@ const ChatScreen = props => {
           )}
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ paddingLeft: 10 }}
+          style={styles.cameraBtn}
           onPress={image ? () => setImage('') : takePic}
           activeOpacity={0.5}
         >
@@ -422,17 +419,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 2,
-    justifyContent: 'space-evenly',
+    width: '100%',
+    paddingHorizontal: '2%',
   },
   backBtn: {
     paddingLeft: '2%',
+    flex: 1,
+  },
+  cameraRollBtn: {
+    padding: 10,
+    justifyContent: 'flex-end',
+  },
+  cameraBtn: {
+    padding: 10,
+    alignSelf: 'flex-end',
   },
   headerTextContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
+    flex: 3,
   },
   headerText: {
     fontSize: 20,
     fontWeight: '600',
+    alignSelf: 'center',
     justifyContent: 'center',
   },
   sender: {

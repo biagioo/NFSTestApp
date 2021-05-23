@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 
 const CustomListItem = ({ index, user, chat }) => {
   const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
-  const [newMsgNotification, setNewMsgNotification] = useState(true);
+  const notification = useSelector(state => state.group.newNotification);
+  const [newMsg, setnewMsg] = useState(false);
+
+  const showMsgNoti = value => {
+    setnewMsg(value);
+  };
 
   return (
     <ListItem onPress={() => chat(user)} key={index} bottomDivider>
@@ -28,9 +34,7 @@ const CustomListItem = ({ index, user, chat }) => {
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
           {nfsCode === 'NFS_AP!' ? 'Admin' : `Vin Number: ${vinNumber}`}
         </ListItem.Subtitle>
-        {newMsgNotification ? (
-          <View style={styles.newMsgNotificationCircle}></View>
-        ) : null}
+        {newMsg ? <View style={styles.newMsgNotificationCircle}></View> : null}
       </ListItem.Content>
     </ListItem>
   );

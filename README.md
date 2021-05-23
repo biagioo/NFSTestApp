@@ -24,6 +24,7 @@
 - portal
 
   - play/ upload videos
+  - conditional loading sign on log in and other customer portal spots
       <!-- - use redux, read field in msg t or f value, send to redux, when chat screen is open make true -->
     <!-- - message time -->
     <!-- - take a pick to send (not just choose from camera roll) -->
@@ -42,16 +43,13 @@
 
 DO BEFORE FRIDAY:
 
-- expand message picture onPress
 - new message puts chat at top
-
-- conditional loading sign on log in and other customer portal spots
-
-  - just do it on pics for now so it looks better
-
 - update profile pic in profile page
+
+- expand message picture onPress
 - Style entrance screen
 
+<!-- - just do it on pics for now so it looks better -->
 <!-- - search bar in admin updates -->
 <!-- - show notification icon when a new message is received or update is posted -->
 <!-- - android appearance fix -->

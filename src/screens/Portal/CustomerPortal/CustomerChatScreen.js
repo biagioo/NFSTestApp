@@ -10,7 +10,6 @@ import {
   Platform,
   Keyboard,
   Alert,
-  Image,
   Text,
   View,
 } from 'react-native';
@@ -21,6 +20,8 @@ import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase';
 import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator } from 'react-native';
+import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
@@ -331,7 +332,18 @@ const CustomerChatScreen = props => {
                         <TouchableOpacity activeOpacity={0.5}>
                           <Image
                             source={{ uri: data.image }}
-                            style={{ width: 200, height: 200, marginLeft: 10 }}
+                            indicator={ProgressBar}
+                            indicatorProps={{
+                              size: 80,
+                              borderWidth: 0,
+                              color: 'rgba(150, 150, 150, 1)',
+                              unfilledColor: 'rgba(200, 200, 200, 0.2)',
+                            }}
+                            style={{
+                              width: 200,
+                              height: 200,
+                              marginLeft: 10,
+                            }}
                           />
                         </TouchableOpacity>
                       ) : null}
@@ -368,6 +380,7 @@ const CustomerChatScreen = props => {
                         <TouchableOpacity activeOpacity={0.5}>
                           <Image
                             source={{ uri: data.image }}
+                            indicator={ProgressBar}
                             style={{ width: 200, height: 200, marginLeft: 10 }}
                           />
                         </TouchableOpacity>
@@ -395,6 +408,7 @@ const CustomerChatScreen = props => {
         {image ? (
           <Image
             source={{ uri: image }}
+            indicator={ProgressBar}
             style={{ width: 200, height: 200, marginLeft: 10 }}
           />
         ) : null}

@@ -7,9 +7,8 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Platform,
   Keyboard,
-  Image,
+  Platform,
   Alert,
   Text,
   View,
@@ -20,6 +19,8 @@ import { useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase';
 import { ActivityIndicator } from 'react-native';
+import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
@@ -322,6 +323,13 @@ const ChatScreen = props => {
                         <TouchableOpacity>
                           <Image
                             source={{ uri: data.image }}
+                            indicator={ProgressBar}
+                            indicatorProps={{
+                              size: 80,
+                              borderWidth: 0,
+                              color: 'rgba(150, 150, 150, 1)',
+                              unfilledColor: 'rgba(200, 200, 200, 0.2)',
+                            }}
                             style={{
                               width: 200,
                               height: 200,
@@ -363,6 +371,7 @@ const ChatScreen = props => {
                         <TouchableOpacity>
                           <Image
                             source={{ uri: data.image }}
+                            indicator={ProgressBar}
                             style={{
                               width: 200,
                               height: 200,
@@ -394,6 +403,7 @@ const ChatScreen = props => {
         {image ? (
           <Image
             source={{ uri: image }}
+            indicator={ProgressBar}
             style={{ width: 200, height: 200, marginLeft: 10 }}
           />
         ) : null}

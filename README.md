@@ -41,14 +41,14 @@
   - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)
   - seperate component for Mapview with logic in it
 
-DO BEFORE FRIDAY:
+DO BEFORE tuesday:
 
 - new message puts chat at top
-- update profile pic in profile page
 
 - expand message picture onPress
 - Style entrance screen
 
+<!-- - update profile pic in profile page -->
 <!-- - just do it on pics for now so it looks better -->
 <!-- - search bar in admin updates -->
 <!-- - show notification icon when a new message is received or update is posted -->

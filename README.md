@@ -36,22 +36,23 @@
   <!-- - need to get Download URL of avatar from fire storage -->
 - fix splash screen
 
-DO BEFORE FRIDAY:
-
-<!-- - style profile page -->
-
-- update profile pic in profile page
-
-- conditional loading sign on log in and other customer portal spots
-  - just do it on pics for now so it looks better
-- search bar in admin updates
-- expand message picture onPress
-<!-- - android appearance fix -->
-
-<!-- - show notification icon when a new message is received or update is posted -->
-
-- new message puts chat at top
-
 - geo location for contact us
   - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)
   - seperate component for Mapview with logic in it
+
+DO BEFORE FRIDAY:
+
+- expand message picture onPress
+- new message puts chat at top
+
+- conditional loading sign on log in and other customer portal spots
+
+  - just do it on pics for now so it looks better
+
+- update profile pic in profile page
+- Style entrance screen
+
+<!-- - search bar in admin updates -->
+<!-- - show notification icon when a new message is received or update is posted -->
+<!-- - android appearance fix -->
+<!-- - style profile page -->

@@ -7,9 +7,7 @@ import firebase from 'firebase';
 const CustomListItem = ({ index, user, chat }) => {
   const auth = useSelector(state => state.auth);
   const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
-  const [newMsg, setNewMsg] = useState(false);
   const [unreadMsg, setUnreadMsg] = useState({});
-  const [messages, setMessages] = useState([]);
 
   useLayoutEffect(() => {
     let customerEmail;
@@ -46,11 +44,6 @@ const CustomListItem = ({ index, user, chat }) => {
     return unsubscribe;
   }, [auth, email]);
 
-  const showMsgNoti = () => {
-    if (unreadMsg !== {}) {
-      setNewMsg(true);
-    }
-  };
   return (
     <ListItem onPress={() => chat(user)} key={index} bottomDivider>
       {profilePic ? (

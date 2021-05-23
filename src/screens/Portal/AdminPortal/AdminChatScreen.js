@@ -9,6 +9,8 @@ import {
   TextInput,
   Platform,
   Keyboard,
+  Image,
+  Alert,
   Text,
   View,
 } from 'react-native';
@@ -17,8 +19,6 @@ import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase';
-import { Image } from 'react-native';
-import { Alert } from 'react-native';
 import { ActivityIndicator } from 'react-native';
 
 const ChatScreen = props => {
@@ -30,7 +30,6 @@ const ChatScreen = props => {
   const [uploading, setUploading] = useState(false);
   const scrollViewRef = useRef();
 
-  // console.log(messages);
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -139,6 +138,7 @@ const ChatScreen = props => {
         from: auth.name,
         name: auth.name,
         email: auth.email,
+        toRead: false,
         image: imageUrl,
         toRead: false,
       })
@@ -318,7 +318,6 @@ const ChatScreen = props => {
                           uri: auth.profilePic,
                         }}
                       />
-                      <Text style={styles.senderText}>{data.message}</Text>
                       {data.image ? (
                         <TouchableOpacity>
                           <Image
@@ -331,6 +330,7 @@ const ChatScreen = props => {
                           />
                         </TouchableOpacity>
                       ) : null}
+                      <Text style={styles.senderText}>{data.message}</Text>
                     </View>
                     <Text
                       style={{
@@ -359,6 +359,18 @@ const ChatScreen = props => {
                           uri: profilePic,
                         }}
                       />
+                      {data.image ? (
+                        <TouchableOpacity>
+                          <Image
+                            source={{ uri: data.image }}
+                            style={{
+                              width: 200,
+                              height: 200,
+                              marginLeft: 10,
+                            }}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
                       <Text style={styles.recieverText}>{data.message}</Text>
                     </View>
                     <Text

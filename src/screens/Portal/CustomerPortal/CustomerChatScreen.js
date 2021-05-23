@@ -163,9 +163,9 @@ const CustomerChatScreen = props => {
       firebase
         .firestore()
         .collection('groups')
-        .doc(customerEmail)
-        .collection('conversations')
         .doc(auth.email)
+        .collection('conversations')
+        .doc(email)
         .collection('messages')
         .add({
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),

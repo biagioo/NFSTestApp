@@ -1,5 +1,14 @@
-import React from 'react';
-import { ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import {
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  Keyboard,
+} from 'react-native';
+import {} from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { createGroup } from '../../../actions';
@@ -8,7 +17,14 @@ import CustomListItem from '../../../components/Portal/CustomListItem';
 const AdminUpdates = ({ navigation }) => {
   const users = useSelector(state => state.group.users);
   const auth = useSelector(state => state.auth);
+  const [input, setInput] = useState('');
   const dispatch = useDispatch();
+
+  const filteredUsers = () => {
+    return users.filter(user =>
+      user.name.toLowerCase().includes(input.toLowerCase())
+    );
+  };
 
   const initChat = customer => {
     const groupInfo = {
@@ -31,19 +47,28 @@ const AdminUpdates = ({ navigation }) => {
       <ActivityIndicator size='large' color='#00ff00' />
     </View>;
   }
-  // console.log(navigation);
+
   return (
     <SafeAreaView styl={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {users.map((user, index) => (
-          <CustomListItem
-            key={index}
-            index={index}
-            user={user}
-            chat={initChat}
-          />
-        ))}
-      </ScrollView>
+      <TextInput
+        value={input}
+        onChangeText={text => setInput(text)}
+        placeholder='Search by Customer Name'
+        style={styles.textInput}
+      />
+
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          {filteredUsers().map((user, index) => (
+            <CustomListItem
+              key={index}
+              index={index}
+              user={user}
+              chat={initChat}
+            />
+          ))}
+        </ScrollView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
@@ -62,5 +87,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
+  },
+  textInput: {
+    flex: 1,
+    bottom: 0,
+    height: 40,
+    padding: 10,
+    color: 'black',
+    // marginRight: 15,
+    marginHorizontal: 10,
+    borderRadius: 30,
+    backgroundColor: '#ECECEC',
   },
 });

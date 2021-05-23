@@ -1,17 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
+import firebase from 'firebase';
 
 const CustomListItem = ({ index, user, chat }) => {
+  const auth = useSelector(state => state.auth);
   const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
-  const notification = useSelector(state => state.group.newNotification);
-  const [newMsg, setnewMsg] = useState(false);
+  const [newMsg, setNewMsg] = useState(false);
+  const [unreadMsg, setUnreadMsg] = useState({});
+  const [messages, setMessages] = useState([]);
 
-  const showMsgNoti = value => {
-    setnewMsg(value);
+  useLayoutEffect(() => {
+    let customerEmail;
+    let adminEmail;
+
+    if (nfsCode === 'NFS_AP!') {
+      customerEmail = auth.email;
+    } else {
+      customerEmail = email;
+    }
+
+    if (nfsCode === 'NFS_CP!') {
+      adminEmail = auth.email;
+    } else {
+      adminEmail = email;
+    }
+
+    const unsubscribe = firebase
+      .firestore()
+      .collection('groups')
+      .doc(customerEmail)
+      .collection('conversations')
+      .doc(adminEmail)
+      .collection('messages')
+      .orderBy('timestamp', 'asc')
+      .onSnapshot(snapshot =>
+        setUnreadMsg(
+          snapshot.docs.find(
+            doc => doc.data().toRead === false && doc.data().to === auth.name
+          )
+        )
+      );
+
+    return unsubscribe;
+  }, [auth, email]);
+
+  const showMsgNoti = () => {
+    if (unreadMsg !== {}) {
+      setNewMsg(true);
+    }
   };
-
   return (
     <ListItem onPress={() => chat(user)} key={index} bottomDivider>
       {profilePic ? (
@@ -30,11 +69,14 @@ const CustomListItem = ({ index, user, chat }) => {
         />
       )}
       <ListItem.Content>
+        {/* {unreadMsg !== undefined ? showMsgNoti() : null} */}
         <ListItem.Title style={{ fontWeight: '800' }}>{name}</ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
           {nfsCode === 'NFS_AP!' ? 'Admin' : `Vin Number: ${vinNumber}`}
         </ListItem.Subtitle>
-        {newMsg ? <View style={styles.newMsgNotificationCircle}></View> : null}
+        {unreadMsg !== undefined ? (
+          <View style={styles.newMsgNotificationCircle}></View>
+        ) : null}
       </ListItem.Content>
     </ListItem>
   );

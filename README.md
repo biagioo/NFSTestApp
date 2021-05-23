@@ -48,12 +48,9 @@ DO BEFORE FRIDAY:
 - expand message picture onPress
 <!-- - android appearance fix -->
 
-- show notification icon when a new message is received or update is posted
+<!-- - show notification icon when a new message is received or update is posted -->
 
-  - can't use redux because it shows red dot for all users, need component state on custom list item.
-  - new message puts chat at top
-
-  For this to work I need to get each chats messages ion the chats screen and see if the last message toRead value is false, if it is show red dot and push to the top of the chats?
+- new message puts chat at top
 
 - geo location for contact us
   - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)

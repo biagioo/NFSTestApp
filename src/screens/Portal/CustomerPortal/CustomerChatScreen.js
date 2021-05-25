@@ -10,6 +10,7 @@ import {
   Platform,
   Keyboard,
   Alert,
+  Modal,
   Text,
   View,
 } from 'react-native';
@@ -30,6 +31,7 @@ const CustomerChatScreen = props => {
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [modalDialog, setModalDialog] = useState(null);
   const scrollViewRef = useRef();
 
   useEffect(() => {
@@ -258,12 +260,6 @@ const CustomerChatScreen = props => {
     });
   };
 
-  const saveImageToDevice = imageUrl => {
-    console.log('see the saveImageToDevice function');
-    // need a uri not a url Sadge
-    // MediaLibrary.saveToLibraryAsync(imageUrl);
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -329,7 +325,9 @@ const CustomerChatScreen = props => {
                         }}
                       />
                       {data.image ? (
-                        <TouchableOpacity activeOpacity={0.5}>
+                        <TouchableOpacity
+                          onPress={() => setModalDialog(data.image)}
+                        >
                           <Image
                             source={{ uri: data.image }}
                             indicator={ProgressBar}
@@ -347,6 +345,28 @@ const CustomerChatScreen = props => {
                           />
                         </TouchableOpacity>
                       ) : null}
+                      <Modal visible={modalDialog !== null} animated>
+                        <StatusBar style='light' />
+                        <View style={styles.modalContainer}>
+                          <TouchableOpacity
+                            onPress={() => setModalDialog(null)}
+                            style={styles.modalBckBtn}
+                          >
+                            <Ionicons
+                              name='arrow-back-circle-outline'
+                              size={40}
+                              color='white'
+                            />
+                          </TouchableOpacity>
+                          <Image
+                            indicator={ProgressBar}
+                            source={
+                              modalDialog !== null ? { uri: modalDialog } : null
+                            }
+                            style={styles.modalImage}
+                          />
+                        </View>
+                      </Modal>
                       <Text style={styles.senderText}>{data.message}</Text>
                     </View>
                     <Text
@@ -377,7 +397,9 @@ const CustomerChatScreen = props => {
                         }}
                       />
                       {data.image ? (
-                        <TouchableOpacity activeOpacity={0.5}>
+                        <TouchableOpacity
+                          onPress={() => setModalDialog(data.image)}
+                        >
                           <Image
                             source={{ uri: data.image }}
                             indicator={ProgressBar}
@@ -385,6 +407,28 @@ const CustomerChatScreen = props => {
                           />
                         </TouchableOpacity>
                       ) : null}
+                      <Modal visible={modalDialog !== null} animated>
+                        <StatusBar style='light' />
+                        <View style={styles.modalContainer}>
+                          <TouchableOpacity
+                            onPress={() => setModalDialog(null)}
+                            style={styles.modalBckBtn}
+                          >
+                            <Ionicons
+                              name='arrow-back-circle-outline'
+                              size={40}
+                              color='white'
+                            />
+                          </TouchableOpacity>
+                          <Image
+                            indicator={ProgressBar}
+                            source={
+                              modalDialog !== null ? { uri: modalDialog } : null
+                            }
+                            style={styles.modalImage}
+                          />
+                        </View>
+                      </Modal>
                       <Text style={styles.recieverText}>{data.message}</Text>
                     </View>
                     <Text
@@ -522,5 +566,22 @@ const styles = StyleSheet.create({
     marginRight: 15,
     borderRadius: 30,
     backgroundColor: '#ECECEC',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  modalImage: {
+    aspectRatio: 1,
+    marginHorizontal: 5,
+  },
+  modalBckBtn: {
+    height: 40,
+    width: 40,
+    zIndex: 1,
+    marginLeft: '4%',
+    bottom: Platform.OS === 'android' ? '15%' : '20%',
   },
 });

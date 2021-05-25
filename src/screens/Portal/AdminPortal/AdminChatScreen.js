@@ -10,6 +10,7 @@ import {
   Keyboard,
   Platform,
   Alert,
+  Modal,
   Text,
   View,
 } from 'react-native';
@@ -21,6 +22,8 @@ import firebase from 'firebase';
 import { ActivityIndicator } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
+import { StatusBar } from 'expo-status-bar';
+import { screenWidth } from '../../../GlobalStyles';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
@@ -29,6 +32,7 @@ const ChatScreen = props => {
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [dialog, setDialog] = useState(null);
   const scrollViewRef = useRef();
 
   useEffect(() => {
@@ -320,7 +324,7 @@ const ChatScreen = props => {
                         }}
                       />
                       {data.image ? (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => setDialog(data.image)}>
                           <Image
                             source={{ uri: data.image }}
                             indicator={ProgressBar}
@@ -330,14 +334,30 @@ const ChatScreen = props => {
                               color: 'rgba(150, 150, 150, 1)',
                               unfilledColor: 'rgba(200, 200, 200, 0.2)',
                             }}
-                            style={{
-                              width: 200,
-                              height: 200,
-                              marginLeft: 10,
-                            }}
+                            style={styles.image}
                           />
                         </TouchableOpacity>
                       ) : null}
+                      <Modal visible={dialog !== null} animated>
+                        <StatusBar style='light' />
+                        <View style={styles.modalContainer}>
+                          <TouchableOpacity
+                            onPress={() => setDialog(null)}
+                            style={styles.modalBckBtn}
+                          >
+                            <Ionicons
+                              name='arrow-back-circle-outline'
+                              size={40}
+                              color='white'
+                            />
+                          </TouchableOpacity>
+                          <Image
+                            indicator={ProgressBar}
+                            source={dialog !== null ? { uri: dialog } : null}
+                            style={styles.modalImage}
+                          />
+                        </View>
+                      </Modal>
                       <Text style={styles.senderText}>{data.message}</Text>
                     </View>
                     <Text
@@ -368,18 +388,34 @@ const ChatScreen = props => {
                         }}
                       />
                       {data.image ? (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => setDialog(data.image)}>
                           <Image
                             source={{ uri: data.image }}
                             indicator={ProgressBar}
-                            style={{
-                              width: 200,
-                              height: 200,
-                              marginLeft: 10,
-                            }}
+                            style={styles.image}
                           />
                         </TouchableOpacity>
                       ) : null}
+                      <Modal visible={dialog !== null} animated>
+                        <StatusBar style='light' />
+                        <View style={styles.modalContainer}>
+                          <TouchableOpacity
+                            onPress={() => setDialog(null)}
+                            style={styles.modalBckBtn}
+                          >
+                            <Ionicons
+                              name='arrow-back-circle-outline'
+                              size={40}
+                              color='white'
+                            />
+                          </TouchableOpacity>
+                          <Image
+                            indicator={ProgressBar}
+                            source={dialog !== null ? { uri: dialog } : null}
+                            style={styles.modalImage}
+                          />
+                        </View>
+                      </Modal>
                       <Text style={styles.recieverText}>{data.message}</Text>
                     </View>
                     <Text
@@ -509,12 +545,33 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     bottom: 0,
-    // height: 40,
     height: 40,
     padding: 10,
     color: 'black',
     marginRight: 15,
     borderRadius: 30,
     backgroundColor: '#ECECEC',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginLeft: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  modalImage: {
+    aspectRatio: 1,
+    marginHorizontal: 5,
+  },
+  modalBckBtn: {
+    height: 40,
+    width: 40,
+    zIndex: 1,
+    marginLeft: '4%',
+    bottom: '20%',
   },
 });

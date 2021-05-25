@@ -44,10 +44,9 @@
 DO BEFORE tuesday:
 
 - new message puts chat at top
-
-- expand message picture onPress
 - Style entrance screen
 
+<!-- - expand message picture onPress -->
 <!-- - update profile pic in profile page -->
 <!-- - just do it on pics for now so it looks better -->
 <!-- - search bar in admin updates -->

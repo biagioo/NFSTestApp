@@ -1,13 +1,13 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 
-const CustomListItem = ({ index, user, chat }) => {
+const CustomListItem = ({ index, user, chat, prioritizeChat }) => {
   const auth = useSelector(state => state.auth);
   const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
-  const [unreadMsg, setUnreadMsg] = useState({});
+  const [unreadMsg, setUnreadMsg] = useState(null);
 
   useLayoutEffect(() => {
     let customerEmail;
@@ -67,7 +67,7 @@ const CustomListItem = ({ index, user, chat }) => {
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
           {nfsCode === 'NFS_AP!' ? 'Admin' : `Vin Number: ${vinNumber}`}
         </ListItem.Subtitle>
-        {unreadMsg !== undefined ? (
+        {unreadMsg != null ? (
           <View style={styles.newMsgNotificationCircle}></View>
         ) : null}
       </ListItem.Content>

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   TouchableWithoutFeedback,
-  KeyboardAvoidingView,
   ActivityIndicator,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   TextInput,
@@ -18,8 +18,20 @@ const AdminUpdates = ({ navigation }) => {
   const users = useSelector(state => state.group.users);
   const auth = useSelector(state => state.auth);
   const [input, setInput] = useState('');
-
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
+
+  const wait = timeout => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(1500).then(() => setRefreshing(false));
+  }, []);
 
   const searchedUsers = () => {
     return users.filter(user =>
@@ -50,7 +62,7 @@ const AdminUpdates = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView styl={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TextInput
         value={input}
         onChangeText={text => setInput(text)}
@@ -59,7 +71,12 @@ const AdminUpdates = ({ navigation }) => {
       />
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={styles.scrollViewContainer}
+        >
           {searchedUsers().map((user, index) => (
             <CustomListItem
               key={index}

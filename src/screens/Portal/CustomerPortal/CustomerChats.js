@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
-  ScrollView,
+  RefreshControl,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
@@ -12,9 +13,22 @@ import CustomListItem from '../../../components/Portal/CustomListItem';
 
 const CustomerUpdates = ({ navigation }) => {
   const users = useSelector(state => state.group.users);
-  const messages = useSelector(state => state.group.messages);
+  // const messages = useSelector(state => state.group.messages);
   const auth = useSelector(state => state.auth);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
+
+  const wait = timeout => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(1500).then(() => setRefreshing(false));
+  }, []);
 
   if (users === []) {
     <View style={[styles.container, styles.horizontal]}>
@@ -50,7 +64,12 @@ const CustomerUpdates = ({ navigation }) => {
         paddingTop: Platform.OS === 'android' ? 25 : 0,
       }}
     >
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={styles.scrollViewContainer}
+      >
         {users.map((user, index) => (
           <CustomListItem key={index} index={index} user={user} chat={chat} />
         ))}

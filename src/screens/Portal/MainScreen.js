@@ -36,7 +36,10 @@ const MainScreen = props => {
       <View style={styles.header}>{/* nfs logo here */}</View>
       <View style={styles.body}>
         <Text>Welcome to the Performance Portal!</Text>
-        <Text>Click below to enter and see updates on your vehicle.</Text>
+        <Text>
+          Please keep all conversations strictly about the progress of your
+          vehicle.
+        </Text>
         <Button title='Enter the Performance Portal' onPress={enterPortal} />
       </View>
     </View>

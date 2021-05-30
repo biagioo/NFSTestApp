@@ -41,7 +41,7 @@
   - configure location (API key? https://docs.expo.io/versions/latest/sdk/map-view/#deploying-google-maps-to-a-standalone-app)
   - seperate component for Mapview with logic in it
 
-DO BEFORE tuesday:
+DO BEFORE Wednesday:
 
 - new message puts chat at top
 - Style entrance screen

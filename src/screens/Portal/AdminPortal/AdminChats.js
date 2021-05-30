@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -18,9 +18,10 @@ const AdminUpdates = ({ navigation }) => {
   const users = useSelector(state => state.group.users);
   const auth = useSelector(state => state.auth);
   const [input, setInput] = useState('');
+
   const dispatch = useDispatch();
 
-  const filteredUsers = () => {
+  const searchedUsers = () => {
     return users.filter(user =>
       user.name.toLowerCase().includes(input.toLowerCase())
     );
@@ -59,7 +60,7 @@ const AdminUpdates = ({ navigation }) => {
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {filteredUsers().map((user, index) => (
+          {searchedUsers().map((user, index) => (
             <CustomListItem
               key={index}
               index={index}

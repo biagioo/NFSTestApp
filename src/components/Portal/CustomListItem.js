@@ -4,7 +4,7 @@ import { ListItem, Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 
-const CustomListItem = ({ index, user, chat, prioritizeChat }) => {
+const CustomListItem = ({ index, user, chat }) => {
   const auth = useSelector(state => state.auth);
   const { name, uid, nfsCode, vinNumber, email, profilePic } = user;
   const [unreadMsg, setUnreadMsg] = useState(null);
@@ -62,7 +62,6 @@ const CustomListItem = ({ index, user, chat, prioritizeChat }) => {
         />
       )}
       <ListItem.Content>
-        {/* {unreadMsg !== undefined ? showMsgNoti() : null} */}
         <ListItem.Title style={{ fontWeight: '800' }}>{name}</ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
           {nfsCode === 'NFS_AP!' ? 'Admin' : `Vin Number: ${vinNumber}`}

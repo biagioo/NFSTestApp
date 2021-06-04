@@ -23,16 +23,18 @@ import { ActivityIndicator } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import { StatusBar } from 'expo-status-bar';
-import { screenWidth } from '../../../GlobalStyles';
+import CustomerCard from '../../../components/Portal/CustomerCard';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { customerEmail, customerName, token, profilePic } = props.route.params;
+  const { customerEmail, customerVinNumb, customerName, token, profilePic } =
+    props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [dialog, setDialog] = useState(null);
+  const [showCustomer, setShowCustomer] = useState(false);
   const scrollViewRef = useRef();
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const ChatScreen = props => {
           await ImagePicker.requestMediaLibraryPermissionsAsync();
         await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+          alert('Sorry, we need camera roll permissions to use this feature!');
         }
       }
     })();
@@ -274,9 +276,12 @@ const ChatScreen = props => {
             <AntDesign name='leftcircleo' size={24} color='black' />
           </TouchableOpacity>
         </View>
-        <View style={styles.headerTextContainer}>
+        <TouchableOpacity
+          onPress={() => setShowCustomer(true)}
+          style={styles.headerTextContainer}
+        >
           <Text style={styles.headerText}>{customerName}</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.cameraRollBtn}
           onPress={image ? () => setImage('') : pickImage}
@@ -302,6 +307,15 @@ const ChatScreen = props => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
+            <Modal visible={showCustomer}>
+              <CustomerCard
+                customerEmail={customerEmail}
+                customerVinNumb={customerVinNumb}
+                customerName={customerName}
+                profilePic={profilePic}
+                setShowCustomer={setShowCustomer}
+              />
+            </Modal>
             <ScrollView
               contentContainerStyle={{ paddingTop: 15 }}
               ref={scrollViewRef}

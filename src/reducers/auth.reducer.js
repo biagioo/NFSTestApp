@@ -7,6 +7,7 @@ const initialState = {
   nfsCode: '',
   uid: '',
   token: '',
+  phoneNumber: '',
   profilePic: '',
   error: null,
 };

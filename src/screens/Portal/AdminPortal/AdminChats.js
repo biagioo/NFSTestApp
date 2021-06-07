@@ -47,6 +47,7 @@ const AdminUpdates = ({ navigation }) => {
       customerEmail: customer.email,
       customerName: customer.name,
       customerVinNumb: customer.vinNumber,
+      customerPhone: customer.phoneNumber,
       profilePic: customer.profilePic,
       token: customer.token,
     };

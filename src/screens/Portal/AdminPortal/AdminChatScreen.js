@@ -27,8 +27,14 @@ import CustomerCard from '../../../components/Portal/CustomerCard';
 
 const ChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { customerEmail, customerVinNumb, customerName, token, profilePic } =
-    props.route.params;
+  const {
+    customerEmail,
+    customerVinNumb,
+    customerName,
+    token,
+    profilePic,
+    customerPhone,
+  } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
@@ -313,6 +319,7 @@ const ChatScreen = props => {
                 customerVinNumb={customerVinNumb}
                 customerName={customerName}
                 profilePic={profilePic}
+                customerPhone={customerPhone}
                 setShowCustomer={setShowCustomer}
               />
             </Modal>

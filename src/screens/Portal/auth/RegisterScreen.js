@@ -23,6 +23,7 @@ const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [vinNumber, setVinNumber] = useState('');
   const [nfsCode, setNfsCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const dispatch = useDispatch();
 
   const emptyState = () => {
@@ -31,6 +32,7 @@ const RegisterScreen = ({ navigation }) => {
     setPassword('');
     setVinNumber('');
     setNfsCode('');
+    setPhoneNumber('');
   };
 
   const register = async () => {
@@ -44,6 +46,8 @@ const RegisterScreen = ({ navigation }) => {
       Alert.alert('The Last 6 numbers of your Vehicles Vin Number is Required');
     } else if (!nfsCode) {
       Alert.alert('NFS Code is Required, Please contact NFS to obtain a code.');
+    } else if (!phoneNumber) {
+      Alert.alert('Please Provide your Cell Phone Number');
     } else {
       const user = {
         email,
@@ -51,6 +55,7 @@ const RegisterScreen = ({ navigation }) => {
         name,
         vinNumber,
         nfsCode,
+        phoneNumber,
       };
 
       dispatch(signUp(user))
@@ -75,6 +80,15 @@ const RegisterScreen = ({ navigation }) => {
           <ScrollView style={{ flex: 1 }}>
             <Input
               style={styles.input}
+              placeholder={'Name'}
+              value={name}
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setName(text)}
+            />
+            <Input
+              style={styles.input}
               placeholder={'Email'}
               value={email}
               inputContainerStyle={{
@@ -94,12 +108,21 @@ const RegisterScreen = ({ navigation }) => {
             />
             <Input
               style={styles.input}
-              placeholder={'Name'}
-              value={name}
+              placeholder={'NFS Code'}
+              value={nfsCode}
               inputContainerStyle={{
                 borderBottomWidth: 0,
               }}
-              onChangeText={text => setName(text)}
+              onChangeText={text => setNfsCode(text)}
+            />
+            <Input
+              style={styles.input}
+              placeholder={'Phone Number'}
+              value={phoneNumber}
+              inputContainerStyle={{
+                borderBottomWidth: 0,
+              }}
+              onChangeText={text => setPhoneNumber(text)}
             />
             <Input
               style={styles.input}
@@ -109,15 +132,6 @@ const RegisterScreen = ({ navigation }) => {
                 borderBottomWidth: 0,
               }}
               onChangeText={text => setVinNumber(text)}
-            />
-            <Input
-              style={styles.input}
-              placeholder={'NFS Code'}
-              value={nfsCode}
-              inputContainerStyle={{
-                borderBottomWidth: 0,
-              }}
-              onChangeText={text => setNfsCode(text)}
             />
 
             <TouchableOpacity activeOpacity={0.5} onPress={register}>

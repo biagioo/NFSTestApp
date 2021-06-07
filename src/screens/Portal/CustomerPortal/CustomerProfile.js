@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
   Text,
   View,
-  Platform,
   Alert,
+  Platform,
+  StyleSheet,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +22,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 const CustomerProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
-  const { name, email, vinNumber, nfsCode, uid, profilePic } = auth;
+  const { name, email, vinNumber, nfsCode, uid, profilePic, phoneNumber } =
+    auth;
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
@@ -179,10 +181,15 @@ const CustomerProfile = ({ navigation }) => {
         />
       )}
 
-      <View style={styles.body}>
-        <View style={styles.subtitleContainer}>
+      <ScrollView style={styles.body}>
+        <View style={styles.info}>
           <Text style={styles.subTitle}>Last 6 of Vin Number: {vinNumber}</Text>
+        </View>
+        <View style={styles.info}>
           <Text style={styles.subTitle}>Your email is: {email}</Text>
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.subTitle}>Phone Number: {phoneNumber}</Text>
         </View>
         {uploading ? (
           <ActivityIndicator size='large' />
@@ -201,7 +208,7 @@ const CustomerProfile = ({ navigation }) => {
             />
           </>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -224,26 +231,39 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   profilePic: {
-    height: screenHeight / 5.2,
+    height: screenHeight / 6.2,
     width: screenWidth / 2,
     position: 'absolute',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'android' ? '17%' : '10%',
+    marginTop: Platform.OS === 'android' ? '17%' : '20%',
   },
   body: {
     flex: 2,
   },
-  subtitleContainer: {
-    justifyContent: 'space-between',
+  info: {
+    borderRadius: 60,
+    marginVertical: '2%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    width: screenWidth - 60,
+    height: '20%',
+    backgroundColor: '#ADB1BB',
   },
   subTitle: {
     fontSize: 22,
-    borderWidth: 1,
-    borderColor: 'rgba(6, 0, 0, 0.23)',
     padding: 2,
   },
   button: {
     margin: '5%',
     backgroundColor: 'rgba(0, 0, 13, 0.76)',
+  },
+  editPicBtn: {
+    position: 'absolute',
+    zIndex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

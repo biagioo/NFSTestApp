@@ -6,6 +6,7 @@ import {
   Alert,
   Platform,
   StyleSheet,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -23,7 +24,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const AdminProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
-  const { name, email, vinNumber, nfsCode, profilePic, uid } = auth;
+  const { name, email, vinNumber, nfsCode, profilePic, uid, phoneNumber } =
+    auth;
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(null);
   const [foreUpdate, setForceUpdate] = useState(0); // integer state
@@ -187,10 +189,15 @@ const AdminProfile = ({ navigation }) => {
           title='Loading Picture...'
         />
       )}
-      <View style={styles.body}>
-        <View style={styles.subtitleContainer}>
+      <ScrollView style={styles.body}>
+        <View style={styles.info}>
           <Text style={styles.subTitle}>Last 6 of Vin Number: {vinNumber}</Text>
+        </View>
+        <View style={styles.info}>
           <Text style={styles.subTitle}>Your email is: {email}</Text>
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.subTitle}>Phone Number: {phoneNumber}</Text>
         </View>
         {uploading ? (
           <ActivityIndicator size='large' />
@@ -209,7 +216,7 @@ const AdminProfile = ({ navigation }) => {
             />
           </>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -241,13 +248,20 @@ const styles = StyleSheet.create({
   body: {
     flex: 2,
   },
-  subtitleContainer: {
-    justifyContent: 'space-between',
+  info: {
+    borderRadius: 60,
+    marginVertical: '2%',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    width: screenWidth - 60,
+    height: '20%',
+    backgroundColor: '#ADB1BB',
   },
   subTitle: {
     fontSize: 22,
-    borderWidth: 1,
-    borderColor: 'rgba(6, 0, 0, 0.23)',
     padding: 2,
   },
   button: {

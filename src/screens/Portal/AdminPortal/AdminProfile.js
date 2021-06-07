@@ -3,15 +3,17 @@ import React, { useEffect, useState, useRef } from 'react';
 import {
   Text,
   View,
+  Modal,
   Alert,
   Platform,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Avatar, Button } from 'react-native-elements';
-import { signOut, getRealtimeUsers, newNotification } from '../../../actions';
+import { signOut, getRealtimeUsers } from '../../../actions';
 import { useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
@@ -19,8 +21,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
 import firebase from 'firebase';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import EditProfile from '../../../components/Portal/EditProfile';
 
 const AdminProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
@@ -28,8 +29,9 @@ const AdminProfile = ({ navigation }) => {
     auth;
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(null);
-  const [foreUpdate, setForceUpdate] = useState(0); // integer state
-  const notificationListener = useRef();
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  // const [foreUpdate, setForceUpdate] = useState(0); // integer state
+  // const notificationListener = useRef();
   const responseListener = useRef();
   const dispatch = useDispatch();
 
@@ -189,6 +191,7 @@ const AdminProfile = ({ navigation }) => {
           title='Loading Picture...'
         />
       )}
+
       <ScrollView style={styles.body}>
         <View style={styles.info}>
           <Text style={styles.subTitle}>Last 6 of Vin Number: {vinNumber}</Text>
@@ -205,18 +208,73 @@ const AdminProfile = ({ navigation }) => {
           <>
             <Button
               buttonStyle={styles.button}
-              title='Pick a new Profile Pic'
-              onPress={pickImage}
-            />
-
-            <Button
-              buttonStyle={styles.button}
               title='Sign Out'
               onPress={signOutUser}
+            />
+            <Button
+              buttonStyle={styles.button}
+              title='Edit My Info'
+              onPress={() => setEditModalOpen(true)}
             />
           </>
         )}
       </ScrollView>
+      <Modal visible={editModalOpen}>
+        <EditProfile
+          name={name}
+          email={email}
+          vinNumber={vinNumber}
+          phoneNumber={phoneNumber}
+          profilePic={profilePic}
+          setEditModalOpen={setEditModalOpen}
+          pickImage={pickImage}
+        />
+        {/* <View style={styles.editModal}>
+          <TouchableOpacity
+            onPress={() => setEditModalOpen(false)}
+            style={styles.modalBckBtn}
+          >
+            <Ionicons
+              name='arrow-back-circle-outline'
+              size={40}
+              color='black'
+            />
+          </TouchableOpacity>
+
+          <Avatar
+            rounded
+            size={200}
+            containerStyle={{ alignSelf: 'center', marginBottom: '20%' }}
+            source={{
+              uri: profilePic,
+            }}
+          />
+
+          <View style={styles.modalInfo}>
+            <Text>Name: {name}</Text>
+          </View>
+          <View style={styles.modalInfo}>
+            <Text>Email: {email}</Text>
+          </View>
+          <View style={styles.modalInfo}>
+            <Text>Vin Number: {vinNumber}</Text>
+          </View>
+          <View style={styles.modalInfo}>
+            <Text>Phone Number: {phoneNumber}</Text>
+          </View>
+
+          <Button
+            buttonStyle={styles.button}
+            title='Change Profile Picture'
+            onPress={pickImage}
+          />
+          <Button
+            buttonStyle={styles.button}
+            title='Change Password'
+            onPress={() => console.log('whats one more thing to do eh?')}
+          />
+        </View> */}
+      </Modal>
     </View>
   );
 };
@@ -233,31 +291,31 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    marginTop: Platform.OS === 'android' ? '5%' : '10%',
-    position: 'absolute',
-    alignSelf: 'center',
     color: 'white',
+    alignSelf: 'center',
+    position: 'absolute',
+    marginTop: Platform.OS === 'android' ? '5%' : '10%',
   },
   profilePic: {
-    height: screenHeight / 6.2,
-    width: screenWidth / 2,
-    position: 'absolute',
     alignSelf: 'center',
+    position: 'absolute',
+    width: screenWidth / 2,
+    height: screenHeight / 6.2,
     marginTop: Platform.OS === 'android' ? '17%' : '20%',
   },
   body: {
     flex: 2,
   },
   info: {
+    height: '20%',
     borderRadius: 60,
-    marginVertical: '2%',
     alignSelf: 'center',
     paddingVertical: 10,
+    marginVertical: '2%',
     alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 15,
     width: screenWidth - 60,
-    height: '20%',
+    justifyContent: 'center',
     backgroundColor: '#ADB1BB',
   },
   subTitle: {
@@ -269,9 +327,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 13, 0.76)',
   },
   editPicBtn: {
-    position: 'absolute',
     zIndex: 2,
-    justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+  },
+  editModal: {
+    flex: 1,
+  },
+  modalBckBtn: {
+    zIndex: 1,
+    width: 40,
+    height: 40,
+    marginLeft: '4%',
+    marginTop: '10%',
+  },
+  modalInfo: {
+    borderRadius: 60,
+    marginBottom: '5%',
+    alignSelf: 'center',
+    paddingVertical: 15,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    width: screenWidth - 60,
+    height: screenHeight / 17,
+    backgroundColor: '#ADB1BB',
   },
 });

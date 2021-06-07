@@ -11,6 +11,7 @@ const CustomerCard = props => {
     customerName,
     setShowCustomer,
     profilePic,
+    customerPhone,
   } = props;
   return (
     <View style={styles.showCustContainer}>
@@ -40,7 +41,7 @@ const CustomerCard = props => {
         <Text>Vin Number: {customerVinNumb}</Text>
       </View>
       <View style={styles.custInfo}>
-        <Text>Phone Number: 999-9999</Text>
+        <Text>Phone Number: {customerPhone}</Text>
       </View>
     </View>
   );

@@ -2,7 +2,7 @@ LEFT TO DO xD
 
 - portal
 
-  - display contact info when tap on name
+  - edit on Profile Page
   - play/ upload videos
   - conditional loading sign on log in and other customer portal spots
   - new message puts chat at top

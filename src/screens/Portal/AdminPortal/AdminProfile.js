@@ -221,59 +221,15 @@ const AdminProfile = ({ navigation }) => {
       </ScrollView>
       <Modal visible={editModalOpen}>
         <EditProfile
-          name={name}
-          email={email}
-          vinNumber={vinNumber}
-          phoneNumber={phoneNumber}
-          profilePic={profilePic}
-          setEditModalOpen={setEditModalOpen}
+          userName={name}
+          userImage={image}
+          userEmail={email}
+          userVinNumber={vinNumber}
+          userPhoneNumber={phoneNumber}
+          userProfilePic={profilePic}
           pickImage={pickImage}
+          setEditModalOpen={setEditModalOpen}
         />
-        {/* <View style={styles.editModal}>
-          <TouchableOpacity
-            onPress={() => setEditModalOpen(false)}
-            style={styles.modalBckBtn}
-          >
-            <Ionicons
-              name='arrow-back-circle-outline'
-              size={40}
-              color='black'
-            />
-          </TouchableOpacity>
-
-          <Avatar
-            rounded
-            size={200}
-            containerStyle={{ alignSelf: 'center', marginBottom: '20%' }}
-            source={{
-              uri: profilePic,
-            }}
-          />
-
-          <View style={styles.modalInfo}>
-            <Text>Name: {name}</Text>
-          </View>
-          <View style={styles.modalInfo}>
-            <Text>Email: {email}</Text>
-          </View>
-          <View style={styles.modalInfo}>
-            <Text>Vin Number: {vinNumber}</Text>
-          </View>
-          <View style={styles.modalInfo}>
-            <Text>Phone Number: {phoneNumber}</Text>
-          </View>
-
-          <Button
-            buttonStyle={styles.button}
-            title='Change Profile Picture'
-            onPress={pickImage}
-          />
-          <Button
-            buttonStyle={styles.button}
-            title='Change Password'
-            onPress={() => console.log('whats one more thing to do eh?')}
-          />
-        </View> */}
       </Modal>
     </View>
   );

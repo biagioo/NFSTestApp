@@ -2,10 +2,11 @@ LEFT TO DO xD
 
 - portal
 
-  - edit on Profile Page
+  <!-- - edit on Profile Page -->
+
   - play/ upload videos
-  - conditional loading sign on log in and other customer portal spots
   - new message puts chat at top
+  - conditional loading sign on log in and other customer portal spots
 
 - where to put firebase config and stuff?
 - Firebase security rules
@@ -19,8 +20,6 @@ LEFT TO DO xD
 
 - fix splash screen
 
-- profile pic
-
-  - delete old pic when profile pic updated
+- delete old Pro pic when profile pic updated
 
 - Book appt

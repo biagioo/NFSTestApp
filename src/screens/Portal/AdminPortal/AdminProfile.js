@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Avatar, Button } from 'react-native-elements';
-import { signOut, getRealtimeUsers } from '../../../actions';
+import { signOut, getRealtimeUsers, editUser } from '../../../actions';
 import { useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
@@ -30,8 +30,6 @@ const AdminProfile = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  // const [foreUpdate, setForceUpdate] = useState(0); // integer state
-  // const notificationListener = useRef();
   const responseListener = useRef();
   const dispatch = useDispatch();
 
@@ -155,6 +153,27 @@ const AdminProfile = ({ navigation }) => {
     }
   };
 
+  const submitProfileChanges = (
+    email,
+    password,
+    name,
+    vinNumber,
+    phoneNumber
+  ) => {
+    const userNewInfo = {
+      email,
+      password,
+      name,
+      vinNumber,
+      phoneNumber,
+    };
+    dispatch(editUser(userNewInfo))
+      .then(() => {
+        console.log('great success?');
+      })
+      .catch(error => alert(error.message));
+  };
+
   const signOutUser = () => {
     dispatch(signOut());
     navigation.replace('Log In');
@@ -169,9 +188,6 @@ const AdminProfile = ({ navigation }) => {
         colors={['rgba(6, 0, 0, 0.23)', 'rgba(0, 0, 13, 0.65)']}
         style={styles.background}
       />
-      {/* <TouchableOpacity style={styles.editPicBtn}>
-        <FontAwesome5 name='edit' size={32} color='black' />
-      </TouchableOpacity> */}
       <Text numberOfLines={1} style={styles.title}>{`Welcome, ${name}.`}</Text>
 
       {image ? (
@@ -229,6 +245,7 @@ const AdminProfile = ({ navigation }) => {
           userProfilePic={profilePic}
           pickImage={pickImage}
           setEditModalOpen={setEditModalOpen}
+          submitProfileChanges={submitProfileChanges}
         />
       </Modal>
     </View>

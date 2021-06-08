@@ -4,6 +4,7 @@ import {
   Text,
   View,
   Alert,
+  Modal,
   Platform,
   StyleSheet,
   ScrollView,
@@ -16,9 +17,9 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import firebase from 'firebase';
 import { LinearGradient } from 'expo-linear-gradient';
-import { signOut, getRealtimeUsers } from '../../../actions';
+import { signOut, getRealtimeUsers, editUser } from '../../../actions';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
-import { FontAwesome5 } from '@expo/vector-icons';
+import EditProfile from '../../../components/Portal/EditProfile';
 
 const CustomerProfile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
@@ -26,6 +27,7 @@ const CustomerProfile = ({ navigation }) => {
     auth;
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -148,6 +150,27 @@ const CustomerProfile = ({ navigation }) => {
     }
   };
 
+  const submitProfileChanges = (
+    email,
+    password,
+    name,
+    vinNumber,
+    phoneNumber
+  ) => {
+    const userNewInfo = {
+      email,
+      password,
+      name,
+      vinNumber,
+      phoneNumber,
+    };
+    dispatch(editUser(userNewInfo))
+      .then(() => {
+        console.log('great success?');
+      })
+      .catch(error => alert(error.message));
+  };
+
   const signOutUser = () => {
     dispatch(signOut());
     navigation.replace('Log In');
@@ -175,6 +198,7 @@ const CustomerProfile = ({ navigation }) => {
         <Avatar
           size='large'
           rounded
+          icon={{ name: 'users', type: 'font-awesome' }}
           style={styles.profilePic}
           source={{ uri: profilePic }}
           title='Loading Picture...'
@@ -197,10 +221,9 @@ const CustomerProfile = ({ navigation }) => {
           <>
             <Button
               buttonStyle={styles.button}
-              title='Pick a new Profile Pic'
-              onPress={pickImage}
+              title='Edit My Info'
+              onPress={() => setEditModalOpen(true)}
             />
-
             <Button
               buttonStyle={styles.button}
               title='Sign Out'
@@ -209,6 +232,19 @@ const CustomerProfile = ({ navigation }) => {
           </>
         )}
       </ScrollView>
+      <Modal visible={editModalOpen}>
+        <EditProfile
+          userName={name}
+          userImage={image}
+          userEmail={email}
+          userVinNumber={vinNumber}
+          userPhoneNumber={phoneNumber}
+          userProfilePic={profilePic}
+          pickImage={pickImage}
+          setEditModalOpen={setEditModalOpen}
+          submitProfileChanges={submitProfileChanges}
+        />
+      </Modal>
     </View>
   );
 };

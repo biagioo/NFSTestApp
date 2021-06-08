@@ -106,6 +106,66 @@ export const getSignedInUser = () => {
   };
 };
 
+// edit user
+export const editUser = userNewInfo => {
+  return async dispatch => {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    if (userNewInfo.password != '') {
+      user
+        .updatePassword(userNewInfo.password)
+        .then(() => {
+          user
+            .updateEmail(userNewInfo.email)
+            .then(() => {
+              db.collection('users')
+                .doc(user.uid)
+                .set(
+                  {
+                    email: userNewInfo.email,
+                    name: userNewInfo.name,
+                    vinNumber: userNewInfo.vinNumber,
+                    phoneNumber: userNewInfo.phoneNumber,
+                  },
+                  { merge: true }
+                )
+                .then(() => {
+                  dispatch(getSignedInUser());
+                });
+            })
+            .catch(e => {
+              alert(e.message);
+            });
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+    } else {
+      user
+        .updateEmail(userNewInfo.email)
+        .then(() => {
+          db.collection('users')
+            .doc(user.uid)
+            .set(
+              {
+                email: userNewInfo.email,
+                name: userNewInfo.name,
+                vinNumber: userNewInfo.vinNumber,
+                phoneNumber: userNewInfo.phoneNumber,
+              },
+              { merge: true }
+            )
+            .then(() => {
+              dispatch(getSignedInUser());
+            });
+        })
+        .catch(e => {
+          alert(e.message);
+        });
+    }
+  };
+};
+
 // Logout
 
 export const signOut = () => {

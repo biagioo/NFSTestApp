@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import {
   View,
+  Alert,
   Keyboard,
+  TextInput,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -13,12 +15,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { screenHeight, screenWidth } from '../../GlobalStyles';
 
 const EditProfile = props => {
-  const [email, setEmail] = useState(userEmail);
-  const [password, setPassword] = useState('');
-  const [passwordAgain, setPasswordAgain] = useState('');
-  const [name, setName] = useState('');
-  const [vinNumber, setVinNumber] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const {
     userName,
     userImage,
@@ -28,7 +24,42 @@ const EditProfile = props => {
     userProfilePic,
     setEditModalOpen,
     pickImage,
+    submitProfileChanges,
   } = props;
+
+  const [password, setPassword] = useState('');
+  const [passwordAgain, setPasswordAgain] = useState('');
+  const [email, setEmail] = useState(userEmail);
+  const [name, setName] = useState(userName);
+  const [vinNumber, setVinNumber] = useState(userVinNumber);
+  const [phoneNumber, setPhoneNumber] = useState(userPhoneNumber);
+
+  const emptyState = () => {
+    setEmail(userEmail);
+    setPassword('');
+    setPasswordAgain('');
+    setName(userName);
+    setVinNumber(userVinNumber);
+    setPhoneNumber(userPhoneNumber);
+  };
+
+  const checkInfo = () => {
+    if (!name) {
+      Alert.alert('Name is Required');
+    } else if (!email) {
+      Alert.alert('Email is Required');
+    } else if (!vinNumber) {
+      Alert.alert('The Last 6 numbers of your Vehicles Vin Number is Required');
+    } else if (!phoneNumber) {
+      Alert.alert('Please Provide your Cell Phone Number');
+    } else if (password !== passwordAgain) {
+      Alert.alert('Password fields do not match');
+    } else {
+      submitProfileChanges(email, password, name, vinNumber, phoneNumber);
+      emptyState();
+      setEditModalOpen(false);
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -65,7 +96,7 @@ const EditProfile = props => {
         <Input
           style={styles.input}
           secureTextEntry
-          placeholder={'Password'}
+          placeholder={'New Password'}
           value={password}
           inputContainerStyle={{
             borderBottomWidth: 0,
@@ -75,7 +106,7 @@ const EditProfile = props => {
         <Input
           style={styles.input}
           secureTextEntry
-          placeholder={'Re-enter Password'}
+          placeholder={'Re-enter New Password'}
           value={passwordAgain}
           inputContainerStyle={{
             borderBottomWidth: 0,
@@ -84,7 +115,6 @@ const EditProfile = props => {
         />
         <Input
           style={styles.input}
-          placeholder={`Phone Number: ${userPhoneNumber}`}
           value={phoneNumber}
           inputContainerStyle={{
             borderBottomWidth: 0,
@@ -93,7 +123,6 @@ const EditProfile = props => {
         />
         <Input
           style={styles.input}
-          placeholder={`Email: ${userEmail}`}
           value={email}
           inputContainerStyle={{
             borderBottomWidth: 0,
@@ -102,7 +131,6 @@ const EditProfile = props => {
         />
         <Input
           style={styles.input}
-          placeholder={`Name: ${userName}`}
           value={name}
           inputContainerStyle={{
             borderBottomWidth: 0,
@@ -111,12 +139,11 @@ const EditProfile = props => {
         />
         <Input
           style={styles.input}
-          placeholder={`Vin Number: ${userVinNumber}`}
-          value={email}
+          value={vinNumber}
           inputContainerStyle={{
             borderBottomWidth: 0,
           }}
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => setVinNumber(text)}
         />
 
         <Button
@@ -127,7 +154,7 @@ const EditProfile = props => {
         <Button
           buttonStyle={styles.button}
           title='Submit Profile Changes'
-          onPress={() => console.log('whats one more thing to do eh?')}
+          onPress={() => checkInfo()}
         />
       </ScrollView>
     </KeyboardAvoidingView>

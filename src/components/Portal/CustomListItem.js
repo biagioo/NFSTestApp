@@ -10,27 +10,27 @@ const CustomListItem = ({ index, user, chat }) => {
   const [unreadMsg, setUnreadMsg] = useState(null);
 
   useLayoutEffect(() => {
-    let customerEmail;
-    let adminEmail;
+    let customerUid;
+    let adminUid;
 
     if (nfsCode === 'NFS_AP!') {
-      customerEmail = auth.email;
+      customerUid = auth.uid;
     } else {
-      customerEmail = email;
+      customerUid = uid;
     }
 
     if (nfsCode === 'NFS_CP!') {
-      adminEmail = auth.email;
+      adminUid = auth.uid;
     } else {
-      adminEmail = email;
+      adminUid = uid;
     }
 
     const unsubscribe = firebase
       .firestore()
       .collection('groups')
-      .doc(customerEmail)
+      .doc(customerUid)
       .collection('conversations')
-      .doc(adminEmail)
+      .doc(adminUid)
       .collection('messages')
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot =>

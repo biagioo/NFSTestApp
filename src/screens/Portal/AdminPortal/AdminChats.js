@@ -43,7 +43,7 @@ const AdminUpdates = ({ navigation }) => {
     const groupInfo = {
       adminId: auth.uid,
       adminName: auth.name,
-      customerId: customer.uid,
+      customerUid: customer.uid,
       customerEmail: customer.email,
       customerName: customer.name,
       customerVinNumb: customer.vinNumber,

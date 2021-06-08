@@ -38,9 +38,9 @@ const CustomerUpdates = ({ navigation }) => {
 
   const chat = user => {
     const groupInfo = {
-      adminId: user.uid,
+      adminUid: user.uid,
       adminName: user.name,
-      customerId: auth.uid,
+      customerUid: auth.uid,
       customerEmail: auth.email,
       customerName: auth.name,
       customerVinNumb: auth.vinNumber,
@@ -53,6 +53,7 @@ const CustomerUpdates = ({ navigation }) => {
       email: user.email,
       token: user.token,
       profilePic: user.profilePic,
+      adminUid: user.uid,
     });
   };
 

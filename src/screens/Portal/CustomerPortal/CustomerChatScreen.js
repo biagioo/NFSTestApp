@@ -26,7 +26,7 @@ import ProgressBar from 'react-native-progress/Bar';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
-  const { name, email, token, profilePic } = props.route.params;
+  const { name, email, token, profilePic, adminUid } = props.route.params;
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
@@ -51,9 +51,9 @@ const CustomerChatScreen = props => {
     const unsubscribe = firebase
       .firestore()
       .collection('groups')
-      .doc(auth.email)
+      .doc(auth.uid)
       .collection('conversations')
-      .doc(email)
+      .doc(adminUid)
       .collection('messages')
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot =>
@@ -130,9 +130,9 @@ const CustomerChatScreen = props => {
     firebase
       .firestore()
       .collection('groups')
-      .doc(auth.email)
+      .doc(auth.uid)
       .collection('conversations')
-      .doc(email)
+      .doc(adminUid)
       .collection('messages')
       .add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -166,9 +166,9 @@ const CustomerChatScreen = props => {
       firebase
         .firestore()
         .collection('groups')
-        .doc(auth.email)
+        .doc(auth.uid)
         .collection('conversations')
-        .doc(email)
+        .doc(adminUid)
         .collection('messages')
         .add({
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -225,9 +225,9 @@ const CustomerChatScreen = props => {
     firebase
       .firestore()
       .collection('groups')
-      .doc(auth.email)
+      .doc(auth.uid)
       .collection('conversations')
-      .doc(email)
+      .doc(adminUid)
       .collection('messages')
       .doc(`${docId}`)
       .update({

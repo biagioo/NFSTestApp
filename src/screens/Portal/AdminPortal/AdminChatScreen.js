@@ -31,6 +31,7 @@ const ChatScreen = props => {
     customerEmail,
     customerVinNumb,
     customerName,
+    customerUid,
     token,
     profilePic,
     customerPhone,
@@ -60,9 +61,9 @@ const ChatScreen = props => {
     const unsubscribe = firebase
       .firestore()
       .collection('groups')
-      .doc(customerEmail)
+      .doc(customerUid)
       .collection('conversations')
-      .doc(auth.email)
+      .doc(auth.uid)
       .collection('messages')
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot =>
@@ -139,9 +140,9 @@ const ChatScreen = props => {
     firebase
       .firestore()
       .collection('groups')
-      .doc(customerEmail)
+      .doc(customerUid)
       .collection('conversations')
-      .doc(auth.email)
+      .doc(auth.uid)
       .collection('messages')
       .add({
         timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
@@ -176,9 +177,9 @@ const ChatScreen = props => {
       firebase
         .firestore()
         .collection('groups')
-        .doc(customerEmail)
+        .doc(customerUid)
         .collection('conversations')
-        .doc(auth.email)
+        .doc(auth.uid)
         .collection('messages')
         .add({
           timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
@@ -205,9 +206,9 @@ const ChatScreen = props => {
     firebase
       .firestore()
       .collection('groups')
-      .doc(customerEmail)
+      .doc(customerUid)
       .collection('conversations')
-      .doc(auth.email)
+      .doc(auth.uid)
       .collection('messages')
       .doc(`${docId}`)
       .update({

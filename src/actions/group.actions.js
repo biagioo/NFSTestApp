@@ -30,7 +30,7 @@ export const createGroup = groupInfo => {
   return async => {
     const db = firebase.firestore();
     db.collection('groups')
-      .doc(groupInfo.customerEmail)
+      .doc(groupInfo.customerUid)
       .set(groupInfo)
 
       .catch(err => {

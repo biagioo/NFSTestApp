@@ -114,7 +114,7 @@ const CustomerProfile = ({ navigation }) => {
         .storage()
         .ref('images/')
         .child(`profilePictures/`)
-        .child(`customer-${email}/${new Date().toISOString()}`);
+        .child(`customer-${uid}/${new Date().toISOString()}`);
       const snapshot = ref.put(blob);
 
       snapshot.on(

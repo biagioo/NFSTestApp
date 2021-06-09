@@ -117,7 +117,7 @@ const AdminProfile = ({ navigation }) => {
         .storage()
         .ref('images/')
         .child(`profilePictures/`)
-        .child(`admin-${email}/${new Date().toISOString()}`);
+        .child(`admin-${uid}/${new Date().toISOString()}`);
       const snapshot = ref.put(blob);
 
       snapshot.on(

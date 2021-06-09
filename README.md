@@ -4,7 +4,8 @@ LEFT TO DO xD
 
   <!-- - edit on Profile Page -->
 
-  - play/ upload videos
+  <!-- - play/ upload videos -->
+
   - new message puts chat at top
   - conditional loading sign on log in and other customer portal spots
 

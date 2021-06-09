@@ -23,6 +23,7 @@ import { ActivityIndicator } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import { StatusBar } from 'expo-status-bar';
+import { Video, AVPlaybackStatus } from 'expo-av';
 import CustomerCard from '../../../components/Portal/CustomerCard';
 
 const ChatScreen = props => {
@@ -39,6 +40,8 @@ const ChatScreen = props => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  const videoRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [dialog, setDialog] = useState(null);
   const [showCustomer, setShowCustomer] = useState(false);
@@ -135,36 +138,115 @@ const ChatScreen = props => {
     );
   };
 
-  const submitMsg = imageUrl => {
+  const uploadVideo = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError('Network Request Failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', video, true);
+      xhr.send(null);
+    });
+
+    const ref = firebase
+      .storage()
+      .ref('videos')
+      .child(`Admin-${auth.name}`)
+      .child(`customer-${customerUid}/${new Date().toISOString()}`);
+    const snapshot = ref.put(blob);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      error => {
+        setUploading(false);
+        console.log(error);
+        blob.close();
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then(url => {
+          console.log('download url : ', url);
+          setUploading(false);
+          setImage(null);
+          Alert.alert('Upload Succes!', 'Your update has been posted');
+          blob.close();
+
+          submitMsg(url);
+
+          return url;
+        });
+      }
+    );
+  };
+
+  const submitMsg = url => {
     Keyboard.dismiss();
-    firebase
-      .firestore()
-      .collection('groups')
-      .doc(customerUid)
-      .collection('conversations')
-      .doc(auth.uid)
-      .collection('messages')
-      .add({
-        timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-        message: input,
-        uid: auth.uid,
-        to: customerName,
-        from: auth.name,
-        name: auth.name,
-        email: auth.email,
-        toRead: false,
-        image: imageUrl,
-        toRead: false,
-      })
-      .then(() => {
-        console.log('Post added!!');
-        setInput('');
-        setImage(null);
-        sendNotification(token);
-      })
-      .catch(e => {
-        console.log('error!!!!', e);
-      });
+    if (image) {
+      firebase
+        .firestore()
+        .collection('groups')
+        .doc(customerUid)
+        .collection('conversations')
+        .doc(auth.uid)
+        .collection('messages')
+        .add({
+          timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+          message: input,
+          uid: auth.uid,
+          to: customerName,
+          from: auth.name,
+          name: auth.name,
+          email: auth.email,
+          toRead: false,
+          image: url,
+          toRead: false,
+        })
+        .then(() => {
+          console.log('Post added!!');
+          setInput('');
+          setImage(null);
+          sendNotification(token);
+        })
+        .catch(e => {
+          console.log('error!!!!', e);
+        });
+    } else if (video) {
+      firebase
+        .firestore()
+        .collection('groups')
+        .doc(customerUid)
+        .collection('conversations')
+        .doc(auth.uid)
+        .collection('messages')
+        .add({
+          timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+          message: input,
+          uid: auth.uid,
+          to: customerName,
+          from: auth.name,
+          name: auth.name,
+          email: auth.email,
+          toRead: false,
+          video: url,
+          toRead: false,
+        })
+        .then(() => {
+          console.log('Post added!!');
+          setInput('');
+          setVideo(null);
+          sendNotification(token);
+        })
+        .catch(e => {
+          console.log('error!!!!', e);
+        });
+    }
   };
 
   const sendMessage = () => {
@@ -172,7 +254,7 @@ const ChatScreen = props => {
       Alert.alert('Warning', 'Message Cannot be blank');
     }
 
-    if (image === null && input !== '') {
+    if (image === null && input !== '' && video === null) {
       Keyboard.dismiss();
       firebase
         .firestore()
@@ -198,6 +280,9 @@ const ChatScreen = props => {
     }
     if (image !== null && input !== '') {
       uploadImage();
+      sendNotification(token, input);
+    } else if (video !== null && input !== '') {
+      uploadVideo();
       sendNotification(token, input);
     }
   };
@@ -228,9 +313,11 @@ const ChatScreen = props => {
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
+    console.log(result.type);
+    if (!result.cancelled && result.type === 'video') {
+      setVideo(result.uri);
+    }
+    if (!result.cancelled && result.type === 'image') {
       setImage(result.uri);
     }
   };
@@ -245,7 +332,10 @@ const ChatScreen = props => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.cancelled && result.type === 'video') {
+      setVideo(result.uri);
+    }
+    if (!result.cancelled && result.type === 'image') {
       setImage(result.uri);
     }
   };
@@ -360,6 +450,19 @@ const ChatScreen = props => {
                           />
                         </TouchableOpacity>
                       ) : null}
+                      {data.video ? (
+                        <Video
+                          // ref={videoRef}
+                          style={styles.image}
+                          source={{
+                            uri: data.video,
+                          }}
+                          useNativeControls
+                          resizeMode='contain'
+                          isLooping
+                          // onPlaybackStatusUpdate={status => setStatus(() => status)}
+                        />
+                      ) : null}
                       <Modal visible={dialog !== null} animated>
                         <StatusBar style='light' />
                         <View style={styles.modalContainer}>
@@ -418,6 +521,19 @@ const ChatScreen = props => {
                           />
                         </TouchableOpacity>
                       ) : null}
+                      {data.video ? (
+                        <Video
+                          // ref={videoRef}
+                          style={styles.image}
+                          source={{
+                            uri: data.video,
+                          }}
+                          useNativeControls
+                          resizeMode='contain'
+                          isLooping
+                          // onPlaybackStatusUpdate={status => setStatus(() => status)}
+                        />
+                      ) : null}
                       <Modal visible={dialog !== null} animated>
                         <StatusBar style='light' />
                         <View style={styles.modalContainer}>
@@ -463,6 +579,19 @@ const ChatScreen = props => {
             source={{ uri: image }}
             indicator={ProgressBar}
             style={{ width: 200, height: 200, marginLeft: 10 }}
+          />
+        ) : null}
+        {video ? (
+          <Video
+            ref={videoRef}
+            style={{ width: 200, height: 200, marginLeft: 10 }}
+            source={{
+              uri: video,
+            }}
+            useNativeControls
+            resizeMode='contain'
+            isLooping
+            // onPlaybackStatusUpdate={status => setStatus(() => status)}
           />
         ) : null}
         <View style={styles.footer}>

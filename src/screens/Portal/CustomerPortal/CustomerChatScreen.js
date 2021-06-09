@@ -23,6 +23,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator } from 'react-native';
 import Image from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
+import { Video, AVPlaybackStatus } from 'expo-av';
 
 const CustomerChatScreen = props => {
   const auth = useSelector(state => state.auth);
@@ -30,6 +31,8 @@ const CustomerChatScreen = props => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  const videoRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [modalDialog, setModalDialog] = useState(null);
   const scrollViewRef = useRef();
@@ -125,35 +128,113 @@ const CustomerChatScreen = props => {
     );
   };
 
-  const submitMsg = imageUrl => {
+  const uploadVideo = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError('Network Request Failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', video, true);
+      xhr.send(null);
+    });
+
+    const ref = firebase
+      .storage()
+      .ref('videos')
+      .child(`Admin-${name}`)
+      .child(`customer-${auth.uid}/${new Date().toISOString()}`);
+    const snapshot = ref.put(blob);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      error => {
+        setUploading(false);
+        console.log(error);
+        blob.close();
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then(url => {
+          console.log('download url : ', url);
+          setUploading(false);
+          setImage(null);
+          Alert.alert('Upload Succes!', 'Your update has been posted');
+          blob.close();
+
+          submitMsg(url);
+
+          return url;
+        });
+      }
+    );
+  };
+
+  const submitMsg = url => {
     Keyboard.dismiss();
-    firebase
-      .firestore()
-      .collection('groups')
-      .doc(auth.uid)
-      .collection('conversations')
-      .doc(adminUid)
-      .collection('messages')
-      .add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        message: input,
-        uid: auth.uid,
-        from: auth.name,
-        to: name,
-        name: auth.name,
-        email: auth.email,
-        toRead: false,
-        image: imageUrl,
-      })
-      .then(() => {
-        console.log('Post added!!');
-        setInput('');
-        setImage(null);
-        sendNotification(token);
-      })
-      .catch(e => {
-        console.log('error!!!!', e);
-      });
+    if (image) {
+      firebase
+        .firestore()
+        .collection('groups')
+        .doc(auth.uid)
+        .collection('conversations')
+        .doc(adminUid)
+        .collection('messages')
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          message: input,
+          uid: auth.uid,
+          from: auth.name,
+          to: name,
+          name: auth.name,
+          email: auth.email,
+          toRead: false,
+          image: url,
+        })
+        .then(() => {
+          console.log('Post added!!');
+          setInput('');
+          setImage(null);
+          sendNotification(token);
+        })
+        .catch(e => {
+          console.log('error!!!!', e);
+        });
+    } else if (video) {
+      firebase
+        .firestore()
+        .collection('groups')
+        .doc(auth.uid)
+        .collection('conversations')
+        .doc(adminUid)
+        .collection('messages')
+        .add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          message: input,
+          uid: auth.uid,
+          from: auth.name,
+          to: name,
+          name: auth.name,
+          email: auth.email,
+          toRead: false,
+          video: url,
+        })
+        .then(() => {
+          console.log('Post added!!');
+          setInput('');
+          setImage(null);
+          sendNotification(token);
+        })
+        .catch(e => {
+          console.log('error!!!!', e);
+        });
+    }
   };
 
   const sendMessage = () => {
@@ -161,7 +242,7 @@ const CustomerChatScreen = props => {
       Alert.alert('Warning', 'Message Cannot be blank');
     }
 
-    if (image === null && input !== '') {
+    if (image === null && input !== '' && video === null) {
       Keyboard.dismiss();
       firebase
         .firestore()
@@ -188,6 +269,9 @@ const CustomerChatScreen = props => {
     if (image !== null && input !== '') {
       uploadImage();
       sendNotification(token, input);
+    } else if (video !== null && input !== '') {
+      uploadVideo();
+      sendNotification(token, input);
     }
   };
 
@@ -201,7 +285,10 @@ const CustomerChatScreen = props => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.cancelled && result.type === 'video') {
+      setVideo(result.uri);
+    }
+    if (!result.cancelled && result.type === 'image') {
       setImage(result.uri);
     }
   };
@@ -216,7 +303,10 @@ const CustomerChatScreen = props => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.cancelled && result.type === 'video') {
+      setVideo(result.uri);
+    }
+    if (!result.cancelled && result.type === 'image') {
       setImage(result.uri);
     }
   };
@@ -337,13 +427,20 @@ const CustomerChatScreen = props => {
                               color: 'rgba(150, 150, 150, 1)',
                               unfilledColor: 'rgba(200, 200, 200, 0.2)',
                             }}
-                            style={{
-                              width: 200,
-                              height: 200,
-                              marginLeft: 10,
-                            }}
+                            style={styles.media}
                           />
                         </TouchableOpacity>
+                      ) : null}
+                      {data.video ? (
+                        <Video
+                          style={styles.media}
+                          source={{
+                            uri: data.video,
+                          }}
+                          useNativeControls
+                          resizeMode='contain'
+                          isLooping
+                        />
                       ) : null}
                       <Modal visible={modalDialog !== null} animated>
                         <StatusBar style='light' />
@@ -403,9 +500,22 @@ const CustomerChatScreen = props => {
                           <Image
                             source={{ uri: data.image }}
                             indicator={ProgressBar}
-                            style={{ width: 200, height: 200, marginLeft: 10 }}
+                            style={styles.media}
                           />
                         </TouchableOpacity>
+                      ) : null}
+                      {data.video ? (
+                        <Video
+                          // ref={videoRef}
+                          style={styles.media}
+                          source={{
+                            uri: data.video,
+                          }}
+                          useNativeControls
+                          resizeMode='contain'
+                          isLooping
+                          // onPlaybackStatusUpdate={status => setStatus(() => status)}
+                        />
                       ) : null}
                       <Modal visible={modalDialog !== null} animated>
                         <StatusBar style='light' />
@@ -453,7 +563,20 @@ const CustomerChatScreen = props => {
           <Image
             source={{ uri: image }}
             indicator={ProgressBar}
-            style={{ width: 200, height: 200, marginLeft: 10 }}
+            style={styles.media}
+          />
+        ) : null}
+        {video ? (
+          <Video
+            ref={videoRef}
+            style={styles.media}
+            source={{
+              uri: video,
+            }}
+            useNativeControls
+            resizeMode='contain'
+            isLooping
+            // onPlaybackStatusUpdate={status => setStatus(() => status)}
           />
         ) : null}
         <View style={styles.footer}>
@@ -566,6 +689,11 @@ const styles = StyleSheet.create({
     marginRight: 15,
     borderRadius: 30,
     backgroundColor: '#ECECEC',
+  },
+  media: {
+    width: 200,
+    height: 200,
+    marginLeft: 10,
   },
   modalContainer: {
     flex: 1,

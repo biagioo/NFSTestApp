@@ -228,7 +228,7 @@ const CustomerChatScreen = props => {
         .then(() => {
           console.log('Post added!!');
           setInput('');
-          setImage(null);
+          setVideo(null);
           sendNotification(token);
         })
         .catch(e => {

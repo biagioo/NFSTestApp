@@ -7,7 +7,8 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/NFSSplash.png",
-      "resizeMode": "contain"
+      "resizeMode": "cover",
+      "backgroundColor": "black"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#4F4F4F"
       }
     },
     "web": {

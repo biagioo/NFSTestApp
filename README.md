@@ -3,18 +3,18 @@ LEFT TO DO xD
 - portal
 
   - new message puts chat at top
+  - delete old Pro pic when profile pic updated
   - conditional loading sign on log in and other customer portal spots
 
 - where to put firebase config and stuff?
+
 - Firebase security rules
 
 - forgot password
 
-- fix splash screen
-
-- delete old Pro pic when profile pic updated
-
 - Book appt
+
+<!-- - fix splash screen -->
 
 <!-- - geo location for contact us
 

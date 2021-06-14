@@ -14,6 +14,7 @@ import RegisterScreen from './auth/RegisterScreen';
 import MainScreen from './MainScreen';
 import AdminChatScreen from './AdminPortal/AdminChatScreen';
 import CustomerChatScreen from './CustomerPortal/CustomerChatScreen';
+import ForgotPassword from './auth/ForgotPassword';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -40,6 +41,7 @@ const PortalNavigator = ({ navigation }) => {
       <Stack.Navigator initialRouteName='Log In' headerMode='none'>
         <Stack.Screen name='Log In' component={LoginScreen} />
         <Stack.Screen name='Register' component={RegisterScreen} />
+        <Stack.Screen name='ForgotPassword' component={ForgotPassword} />
         <Stack.Screen
           name='CustomerDashboard'
           component={CustomerDashboardScreen}

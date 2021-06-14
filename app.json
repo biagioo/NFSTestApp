@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/NFSSplash.png",
       "resizeMode": "cover",
-      "backgroundColor": "black"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

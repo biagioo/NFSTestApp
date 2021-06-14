@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet,
+  Alert,
   View,
   Text,
   Keyboard,
+  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Header from '../../../components/Header';
 import { Input } from 'react-native-elements';
+import Header from '../../../components/Header';
 import { screenHeight, screenWidth } from '../../../GlobalStyles';
 import { StatusBar } from 'expo-status-bar';
 import firebase from 'firebase';
-import { useDispatch } from 'react-redux';
-import { signIn } from '../../../actions';
 
-const LoginScreen = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(authUser => {
-      if (authUser) {
-        navigation.replace('MainScreen');
-      }
-    });
-
-    return unsubscribe;
-  });
-
-  const signUserIn = () => {
-    dispatch(signIn({ email, password }));
+  const sendResetEmail = () => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        Alert.alert(
+          'Check Your Email',
+          'A password email reset has been sent to your email. Please follow the Instructions in the email.'
+        );
+        setEmail('');
+        navigation.navigate('Log In');
+      })
+      .catch(error => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        Alert.alert(errorCode, errorMessage);
+        // ..
+      });
   };
-  // console.log('authUth', firebase.auth().currentUser);
 
   return (
     <KeyboardAvoidingView
@@ -46,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
       <Header navigation={navigation} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View keyboardShouldPersistTaps='handled' style={styles.body}>
-          <Text style={styles.title}>Log In</Text>
+          <Text style={styles.title}>Password Reset</Text>
           <Input
             style={styles.input}
             placeholder={'Email'}
@@ -54,17 +56,11 @@ const LoginScreen = ({ navigation }) => {
             type='email'
             onChangeText={text => setEmail(text)}
           />
-          <Input
-            style={styles.input}
-            secureTextEntry
-            placeholder={'Password'}
-            value={password}
-            type='password'
-            onChangeText={text => setPassword(text)}
-          />
-          <TouchableOpacity activeOpacity={0.5} onPress={signUserIn}>
+          <TouchableOpacity activeOpacity={0.5} onPress={sendResetEmail}>
             <View style={styles.button}>
-              <Text style={{ fontWeight: '600' }}>Log In</Text>
+              <Text style={{ fontWeight: '600' }}>
+                Send Password Reset Email
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -77,10 +73,10 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => navigation.navigate('ForgotPassword')}
+            onPress={() => navigation.navigate('Log In')}
           >
             <View style={styles.button}>
-              <Text style={{ fontWeight: '600' }}>Forgot You Password?</Text>
+              <Text style={{ fontWeight: '600' }}>Log In</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -88,6 +84,8 @@ const LoginScreen = ({ navigation }) => {
     </KeyboardAvoidingView>
   );
 };
+
+export default ForgotPassword;
 
 const styles = StyleSheet.create({
   container: {
@@ -132,4 +130,3 @@ const styles = StyleSheet.create({
     marginBottom: '15%',
   },
 });
-export default LoginScreen;

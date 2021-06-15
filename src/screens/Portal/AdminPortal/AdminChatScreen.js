@@ -299,6 +299,13 @@ const ChatScreen = props => {
       .update({
         toRead: true,
       })
+      .then(() =>
+        firebase
+          .firestore()
+          .collection('groups')
+          .doc(customerUid)
+          .set({ newMsg: false }, { merge: true })
+      )
       .catch(error => {
         // The document probably doesn't exist.
         console.error('Error updating document: ', error);

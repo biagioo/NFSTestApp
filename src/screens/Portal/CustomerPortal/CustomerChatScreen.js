@@ -262,6 +262,13 @@ const CustomerChatScreen = props => {
           toRead: false,
         })
         .then(() => {
+          firebase
+            .firestore()
+            .collection('groups')
+            .doc(auth.uid)
+            .set({ newMsg: true }, { merge: true });
+        })
+        .then(() => {
           sendNotification(token, input);
         });
       setInput('');
@@ -323,9 +330,9 @@ const CustomerChatScreen = props => {
       .update({
         toRead: true,
       })
-      .then(() => {
-        console.log('Document successfully updated!');
-      })
+      // .then(() => {
+      //   console.log('Document successfully updated!');
+      // })
       .catch(error => {
         // The document probably doesn't exist.
         console.error('Error updating document: ', error);
